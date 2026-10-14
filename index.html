@@ -7,22 +7,39 @@
 <title>Lernspiele</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
 <style>
-  :root { --sky: #10171f; --panel: #1b2630; --line: #3a4b58; --fg: #eef3ec; --muted: #a7b6ad; --grass: #5fae3a; --diamond: #4fe0d6; color-scheme: dark; }
+  :root { --sky: #10171f; --panel: #1b2630; --line: #3a4b58; --fg: #eef3ec; --muted: #a7b6ad; --grass: #5fae3a; --diamond: #4fe0d6; --gold: #f5c542; color-scheme: dark; }
+  * { box-sizing: border-box; }
   body { margin: 0; background: var(--sky); color: var(--fg); font-family: "Atkinson Hyperlegible", system-ui, sans-serif; font-size: 1.1rem; line-height: 1.5; padding: 24px 16px 48px; }
-  .wrap { max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+  .wrap { max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
   h1 { font-family: "Pixelify Sans", monospace; font-size: 2.2rem; margin: 0; }
+  h2 { font-family: "Pixelify Sans", monospace; font-weight: 500; font-size: 1.2rem; margin: 12px 0 0; color: var(--muted); }
   a.game { display: flex; flex-direction: column; gap: 4px; background: var(--panel); border: 3px solid #0b1015; box-shadow: inset 0 8px 0 var(--grass); padding: 20px 16px 16px; color: var(--fg); text-decoration: none; }
+  a.game.neu { box-shadow: inset 0 8px 0 var(--gold); outline: 3px solid var(--gold); }
   a.game:hover, a.game:focus-visible { outline: 3px solid var(--diamond); }
   a.game b { font-family: "Pixelify Sans", monospace; font-size: 1.4rem; font-weight: 500; }
   a.game span { color: var(--muted); }
+  .badge { align-self: flex-start; background: var(--gold); color: #1b1300; font-family: "Pixelify Sans", monospace; padding: 2px 8px; font-size: .9rem; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>Lernspiele</h1>
   <p>Deutsch: Nebensätze, Adverbialsätze und Satzglieder.</p>
-  <a class="game" href="teil1.html"><b>Teil 1: Blockdorf in Gefahr</b><span>denn oder weil, damit oder sodass, Temporalsätze</span></a>
-  <a class="game" href="teil2.html"><b>Teil 2: Die große Baustelle</b><span>Umformen, Satzglieder, verkleidete Konjunktionen</span></a>
+  <div id="runden"></div>
+  <h2>Ältere Spiele</h2>
+  <a class="game" href="teil1.html"><b>Blockdorf in Gefahr</b><span>denn oder weil, damit oder sodass, Temporalsätze</span></a>
+  <a class="game" href="teil2.html"><b>Die große Baustelle (erste Fassung)</b><span>Umformen, Satzglieder, verkleidete Konjunktionen</span></a>
 </div>
+<script>
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+fetch('runden/liste.json', { cache: 'no-cache' }).then(r => r.json()).then(liste => {
+  const box = document.getElementById('runden');
+  box.style.display = 'flex'; box.style.flexDirection = 'column'; box.style.gap = '14px';
+  box.innerHTML = liste.map((x, i) => {
+    const d = x.datum ? x.datum.split('-').reverse().join('.') : '';
+    return `<a class="game ${i === 0 ? 'neu' : ''}" href="spiel.html?r=${encodeURIComponent(x.id)}">${i === 0 ? '<span class="badge">Neu für dich</span>' : ''}<b>${esc(x.titel)}</b><span>${esc(x.beschreibung || '')}${d ? ' · ' + d : ''}</span></a>`;
+  }).join('');
+}).catch(() => {});
+</script>
 </body>
 </html>

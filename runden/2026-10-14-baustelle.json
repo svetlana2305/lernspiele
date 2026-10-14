@@ -1,0 +1,604 @@
+{
+ "titel": "Blockdorf: Die große Baustelle",
+ "fach": "Deutsch · Klasse 7",
+ "ort": "Die Baustelle",
+ "intro": "Der Schattenritter ist besiegt, jetzt wird das Dorf neu gebaut. Drei Meister bringen dir je etwas Neues bei: Sätze umbauen, Satzglieder finden und verkleidete Konjunktionen. Dann wartet der Eisgolem. Etwa 25 Minuten.",
+ "start": "Zur Baustelle",
+ "sieg": "Der Eisgolem ist geschmolzen!",
+ "lernt": [
+  "wegen → weil, trotz → obwohl, nach → nachdem, bei → wenn, zum → damit, durch → indem.",
+  "Adverbiale Bestimmung: kein eigenes Verb, kein Komma. Adverbialsatz: Verb am Ende, mit Komma.",
+  "Satzglieder findest du mit der Umstellprobe, die Art mit der Frageprobe: Wer? Wen? Wem? Wessen?"
+ ],
+ "module": [
+  {
+   "id": "D",
+   "name": "Umbau-Werkstatt",
+   "ico": "🏗️",
+   "reward": "Brücke",
+   "teaser": "Adverbiale Bestimmung ↔ Adverbialsatz",
+   "steps": [
+    {
+     "t": "info",
+     "html": "<div class=\"npc\"><span class=\"face\">👷</span><div class=\"say\">Willkommen zurück! Nach dem Kampf bauen wir das Dorf neu. In meiner Werkstatt lernst du, wie man <b>dasselbe auf zwei Arten</b> sagt: kurz oder lang. Schau dir zuerst zwei Sätze an.</div></div>"
+    },
+    {
+     "t": "choice",
+     "raw": "A: Wegen des Regens fiel das Spiel aus.<br>B: Weil es regnete, fiel das Spiel aus.",
+     "q": "Welcher Satz hat zwei Verben?",
+     "o": [
+      "Satz A",
+      "Satz B"
+     ],
+     "a": "Satz B",
+     "tip": "Such in jedem Satz die Wörter, die ein Tun beschreiben.",
+     "explain": "In B hat der Nebensatz ein eigenes Verb: <b>regnete</b>. A sagt dasselbe kurz mit „wegen des Regens“, ohne eigenes Verb. So ein Satzteil heißt <b>adverbiale Bestimmung</b>."
+    },
+    {
+     "t": "info",
+     "html": "<h3>Die Regel</h3>\n        <div class=\"rule\">\n          <div><b class=\"h\">Adverbiale Bestimmung</b><span><b>Wegen des Regens</b> fiel das Spiel aus.</span><span>Präposition + Nomen</span><span><b>kein</b> eigenes Verb, <b>kein</b> Komma</span></div>\n          <div><b class=\"h\">Adverbialsatz</b><span><b>Weil es regnete,</b> fiel das Spiel aus.</span><span>Konjunktion + … + Verb am Ende</span><span>eigenes Verb, <b>mit</b> Komma</span></div>\n        </div>\n        <div class=\"tbl\"><table><thead><tr><th>Adverbiale Bestimmung</th><th>Adverbialsatz</th><th>Art</th></tr></thead><tbody>\n          <tr><td>wegen, aufgrund</td><td>weil, da</td><td>Kausalsatz</td></tr>\n          <tr><td>trotz</td><td>obwohl</td><td>Konzessivsatz</td></tr>\n          <tr><td>nach, vor, während, bei</td><td>nachdem, bevor, während, als/wenn</td><td>Temporalsatz</td></tr>\n          <tr><td>bei, im Falle</td><td>wenn, falls</td><td>Konditionalsatz</td></tr>\n          <tr><td>zum, zur, für</td><td>damit, um … zu</td><td>Finalsatz</td></tr>\n          <tr><td>durch, mittels</td><td>indem</td><td>Modalsatz</td></tr>\n        </tbody></table></div>\n        <div class=\"merk\"><b>Trick: Aus dem Nomen wird ein Verb.</b><span>der Regen → es regnete · die Erkältung → er war erkältet · die Ankunft → als er ankam</span></div>"
+    },
+    {
+     "t": "choice",
+     "s": "[n]Trotz der Kälte[/n] gingen wir schwimmen.",
+     "q": "Welche Konjunktion brauchst du für den Nebensatz?",
+     "o": [
+      "obwohl",
+      "weil",
+      "damit",
+      "nachdem"
+     ],
+     "a": "obwohl",
+     "help": "Hilfe: Schau in die Tabelle oben. „trotz“ wird zu …",
+     "explain": "trotz → <b>obwohl</b>: Obwohl es kalt war, gingen wir schwimmen."
+    },
+    {
+     "t": "choice",
+     "s": "[n]Nach dem Training[/n] aßen wir Pizza.",
+     "q": "Welche Konjunktion brauchst du jetzt? Ohne Hilfe.",
+     "o": [
+      "nachdem",
+      "obwohl",
+      "indem",
+      "falls"
+     ],
+     "a": "nachdem",
+     "tip": "„nach“ ist eine Zeitangabe.",
+     "explain": "nach → <b>nachdem</b>: Nachdem wir trainiert hatten, aßen wir Pizza."
+    },
+    {
+     "t": "build",
+     "base": "Aufgrund seiner Erkältung blieb Ben zu Hause.",
+     "q": "Bau daraus einen Satz mit Nebensatz. Achte auf Komma und Verb am Ende.",
+     "tiles": [
+      "Weil",
+      "Ben",
+      "erkältet",
+      "war",
+      ",",
+      "blieb",
+      "er",
+      "zu Hause"
+     ],
+     "sol": [
+      [
+       "Weil",
+       "Ben",
+       "erkältet",
+       "war",
+       ",",
+       "blieb",
+       "er",
+       "zu Hause"
+      ],
+      [
+       "Weil",
+       "er",
+       "erkältet",
+       "war",
+       ",",
+       "blieb",
+       "Ben",
+       "zu Hause"
+      ]
+     ],
+     "wrong": "Fang mit der Konjunktion an. Das Verb des Nebensatzes kommt vor das Komma. Nach dem Komma steht gleich das nächste Verb.",
+     "tip": "Weil Ben erkältet … ? Welches Wort fehlt dann noch vor dem Komma?",
+     "explain": "<b>Weil Ben erkältet war, blieb er zu Hause.</b> (Kausalsatz)"
+    },
+    {
+     "t": "build",
+     "base": "Zur Verbesserung seiner Note lernt Tim jeden Tag.",
+     "q": "Jetzt ein Finalsatz. Bau ihn zusammen.",
+     "tiles": [
+      "Damit",
+      "Tim",
+      "seine Note",
+      "verbessert",
+      ",",
+      "lernt",
+      "er",
+      "jeden Tag"
+     ],
+     "sol": [
+      [
+       "Damit",
+       "Tim",
+       "seine Note",
+       "verbessert",
+       ",",
+       "lernt",
+       "er",
+       "jeden Tag"
+      ],
+      [
+       "Damit",
+       "er",
+       "seine Note",
+       "verbessert",
+       ",",
+       "lernt",
+       "Tim",
+       "jeden Tag"
+      ]
+     ],
+     "wrong": "Denk an die Reihenfolge: Konjunktion … Verb, Komma, Verb …",
+     "tip": "Das Verb „verbessert“ steht im Nebensatz ganz hinten, direkt vor dem Komma.",
+     "explain": "<b>Damit Tim seine Note verbessert, lernt er jeden Tag.</b> (Finalsatz)"
+    },
+    {
+     "t": "info",
+     "html": "<div class=\"npc\"><span class=\"face\">👷</span><div class=\"say\">Jetzt bauen wir <b>rückwärts</b>: Aus dem Nebensatz wird eine kurze adverbiale Bestimmung.</div></div>\n        <div class=\"merk\"><b>Trick: Aus dem Verb wird ein Nomen.</b><span>regnen → der Regen · ankommen → die Ankunft · Angst haben → die Angst · eine Panne haben → die Panne</span>\n        <span><b>Achtung beim Artikel:</b> nach „wegen“ und „trotz“ kommt der Genitiv. <b>die</b> Panne → wegen <b>der</b> Panne. <b>der</b> Regen → wegen <b>des</b> Regens.</span>\n        <span><b>Kein Komma</b> nach der adverbialen Bestimmung, und es bleibt nur <b>ein</b> Verb im ganzen Satz.</span></div>"
+    },
+    {
+     "t": "choice",
+     "s": "Weil der Bus eine Panne hatte, kamen wir zu spät.",
+     "q": "Welche Umformung ist richtig?",
+     "o": [
+      "Wegen der Panne des Busses kamen wir zu spät.",
+      "Wegen des Buspanne kamen wir zu spät.",
+      "Obwohl der Panne kamen wir zu spät."
+     ],
+     "a": "Wegen der Panne des Busses kamen wir zu spät.",
+     "tip": "Es heißt „die Panne“. Was wird daraus nach „wegen“?",
+     "explain": "die Panne → wegen <b>der</b> Panne des Busses. „des Buspanne“ geht nicht, weil Panne weiblich ist."
+    },
+    {
+     "t": "choice",
+     "s": "Obwohl sie Angst hatte, betrat Mia die Höhle.",
+     "q": "Welche Umformung ist richtig?",
+     "o": [
+      "Trotz ihrer Angst betrat Mia die Höhle.",
+      "Wegen ihrer Angst betrat Mia die Höhle.",
+      "Trotz ihrer Angst, betrat Mia die Höhle."
+     ],
+     "a": "Trotz ihrer Angst betrat Mia die Höhle.",
+     "tip": "Zwei Fallen: die Präposition und das Komma.",
+     "explain": "obwohl → <b>trotz</b>. Und nach einer adverbialen Bestimmung steht <b>kein Komma</b>."
+    },
+    {
+     "t": "choice",
+     "s": "Während der Lehrer erklärte, schrieben wir mit.",
+     "q": "Welche Umformung ist richtig?",
+     "o": [
+      "Während der Erklärung des Lehrers schrieben wir mit.",
+      "Nach der Erklärung des Lehrers schrieben wir mit.",
+      "Während der Lehrer erklärte schrieben wir mit."
+     ],
+     "a": "Während der Erklärung des Lehrers schrieben wir mit.",
+     "tip": "Die Aussage muss gleich bleiben. Schreiben sie währenddessen oder danach mit?",
+     "explain": "<b>Während der Erklärung des Lehrers</b> schrieben wir mit. Die Bedeutung bleibt gleich. Satz 3 ist noch ein Nebensatz, nur ohne Komma."
+    },
+    {
+     "t": "write",
+     "s": "Nachdem das Spiel zu Ende war, gingen alle nach Hause.",
+     "q": "Schreib selbst: Forme den Nebensatz in eine adverbiale Bestimmung um.",
+     "model": "Nach dem Ende des Spiels gingen alle nach Hause.",
+     "check": [
+      "„nachdem“ wurde zu „nach“.",
+      "Aus „zu Ende sein“ wurde ein Nomen: das Ende.",
+      "Kein Komma mehr und nur noch ein Verb (gingen)."
+     ]
+    },
+    {
+     "t": "write",
+     "s": "Trotz des Lärms schlief das Baby weiter.",
+     "q": "Schreib selbst: Forme die adverbiale Bestimmung in einen Nebensatz um. Schreib die Art in Klammern dahinter.",
+     "model": "Obwohl es laut war, schlief das Baby weiter. (Konzessivsatz)",
+     "check": [
+      "Konjunktion „obwohl“.",
+      "Das Verb steht am Ende des Nebensatzes (war).",
+      "Komma nach dem Nebensatz.",
+      "Art in Klammern: (Konzessivsatz)."
+     ]
+    }
+   ]
+  },
+  {
+   "id": "E",
+   "name": "Satzglied-Labor",
+   "ico": "🧪",
+   "reward": "Labor",
+   "teaser": "Umstellprobe, Prädikat, Objekte",
+   "steps": [
+    {
+     "t": "info",
+     "html": "<div class=\"npc\"><span class=\"face\">🧪</span><div class=\"say\">Ich bin die Alchemistin. Jeder Satz besteht aus Bausteinen, den <b>Satzgliedern</b>. Ich zeig dir einen Zaubertrick: Man kann die Bausteine im Satz verschieben.</div></div>"
+    },
+    {
+     "t": "choice",
+     "raw": "Der Ritter gibt dem König das Schwert.<br>Dem König gibt der Ritter das Schwert.<br>Das Schwert gibt der Ritter dem König.",
+     "q": "Welche Wörter bleiben beim Umstellen immer zusammen?",
+     "o": [
+      "„dem König“",
+      "„Ritter gibt“",
+      "„König das“"
+     ],
+     "a": "„dem König“",
+     "tip": "Schau, welche Wörter in allen drei Sätzen direkt nebeneinander stehen.",
+     "explain": "Genau. <b>der Ritter | gibt | dem König | das Schwert</b> sind 4 Satzglieder. Was beim Umstellen zusammenbleibt, ist ein Satzglied. Das ist die <b>Umstellprobe</b>."
+    },
+    {
+     "t": "split",
+     "s": "Der Ritter gibt dem König das Schwert.",
+     "cuts": [
+      1,
+      2,
+      4
+     ],
+     "q": "Setz Striche zwischen die Satzglieder. Klick dafür auf die Lücken zwischen den Wörtern.",
+     "help": "Hilfe: Es sind 4 Satzglieder, also 3 Striche.",
+     "explain": "<b>Der Ritter | gibt | dem König | das Schwert.</b>"
+    },
+    {
+     "t": "info",
+     "html": "<h3>Die Satzglieder</h3>\n        <div class=\"tbl\"><table><thead><tr><th>Satzglied</th><th>Frage</th><th>Beispiel</th></tr></thead><tbody>\n          <tr><td><b>Prädikat</b></td><td>Was tut jemand? Was geschieht?</td><td>Der Ritter <b>gibt</b> …</td></tr>\n          <tr><td><b>Subjekt</b></td><td>Wer oder was?</td><td><b>Der Ritter</b> gibt …</td></tr>\n          <tr><td><b>Akkusativobjekt</b></td><td>Wen oder was?</td><td>… gibt <b>das Schwert</b>.</td></tr>\n          <tr><td><b>Dativobjekt</b></td><td>Wem?</td><td>… gibt <b>dem König</b> …</td></tr>\n          <tr><td><b>Genitivobjekt</b></td><td>Wessen?</td><td>Er gedachte <b>seines Vaters</b>.</td></tr>\n          <tr><td><b>Adverbiale Bestimmung</b></td><td>Wann? Wo? Warum? Wie?</td><td><b>Am Morgen</b> ritt er los.</td></tr>\n        </tbody></table></div>\n        <div class=\"merk\"><b>Prädikat:</b> das Verb in der Personalform, im Hauptsatz an <b>2. Stelle</b>. Es kann <b>mehrteilig</b> sein, dann bildet es eine Klammer:<span>Der Zug <b>kommt</b> heute pünktlich <b>an</b>. · Arthur <b>hat</b> das Schwert <b>geholt</b>.</span>\n        <b>Trick:</b><span>Frag immer mit dem Prädikat: <i>Wem</i> gibt der Ritter das Schwert? → dem König → Dativobjekt.</span></div>"
+    },
+    {
+     "t": "mark",
+     "s": "Der Zug kommt heute pünktlich an.",
+     "sol": [
+      2,
+      5
+     ],
+     "q": "Klick alle Teile des Prädikats an.",
+     "help": "Hilfe: Das Prädikat hat hier zwei Teile. Einer steht ganz hinten.",
+     "explain": "<b>kommt … an</b> (ankommen). Das ist eine Prädikatsklammer."
+    },
+    {
+     "t": "mark",
+     "s": "Arthur hat das Schwert aus dem See geholt.",
+     "sol": [
+      1,
+      7
+     ],
+     "q": "Klick alle Teile des Prädikats an. Jetzt ohne Hilfe.",
+     "tip": "Welches Verb steht an 2. Stelle? Gibt es ganz hinten noch einen Teil?",
+     "explain": "<b>hat … geholt</b>."
+    },
+    {
+     "t": "split",
+     "s": "Am Morgen las Mia ihrer Schwester eine Geschichte vor.",
+     "cuts": [
+      1,
+      2,
+      3,
+      5,
+      7
+     ],
+     "q": "Setz die Striche zwischen die Satzglieder.",
+     "tip": "Stell um: „Mia las ihrer Schwester am Morgen eine Geschichte vor.“ Was bleibt zusammen?",
+     "explain": "<b>Am Morgen | las | Mia | ihrer Schwester | eine Geschichte | vor.</b> „las … vor“ ist das Prädikat, „vor“ steht allein am Ende."
+    },
+    {
+     "t": "choice",
+     "s": "[n]Der Fee[/n] dankte Arthur.",
+     "q": "Mit welcher Frage findest du das unterstrichene Satzglied?",
+     "o": [
+      "Wer?",
+      "Wem?",
+      "Wen?",
+      "Wessen?"
+     ],
+     "a": "Wem?",
+     "tip": "Frag mit dem Prädikat: … dankte Arthur?",
+     "explain": "<b>Wem</b> dankte Arthur? Der Fee."
+    },
+    {
+     "t": "choice",
+     "s": "[n]Der Fee[/n] dankte Arthur.",
+     "q": "Welches Satzglied ist es also?",
+     "o": [
+      "Subjekt",
+      "Akkusativobjekt",
+      "Dativobjekt",
+      "Genitivobjekt"
+     ],
+     "a": "Dativobjekt",
+     "tip": "Wem? gehört zu einem Objekt.",
+     "explain": "<b>Dativobjekt</b>. Achtung: Hier steht am Anfang nicht das Subjekt. Wer dankte? Arthur, das ist das Subjekt."
+    },
+    {
+     "t": "choice",
+     "s": "[n]Den Drachen[/n] besiegte der junge Ritter.",
+     "q": "Welches Satzglied ist unterstrichen?",
+     "o": [
+      "Subjekt",
+      "Akkusativobjekt",
+      "Dativobjekt",
+      "Genitivobjekt"
+     ],
+     "a": "Akkusativobjekt",
+     "tip": "Wen besiegte der Ritter?",
+     "explain": "<b>Wen</b> besiegte der Ritter? Den Drachen → <b>Akkusativobjekt</b>."
+    },
+    {
+     "t": "choice",
+     "s": "Der Richter beschuldigte den Dieb [n]des Diebstahls[/n].",
+     "q": "Welches Satzglied ist unterstrichen?",
+     "o": [
+      "Subjekt",
+      "Akkusativobjekt",
+      "Dativobjekt",
+      "Genitivobjekt"
+     ],
+     "a": "Genitivobjekt",
+     "tip": "Wessen beschuldigte er den Dieb?",
+     "explain": "<b>Wessen</b> beschuldigte er ihn? Des Diebstahls → <b>Genitivobjekt</b>. Das kommt selten vor, meist bei Verben wie beschuldigen, gedenken, sich erinnern."
+    },
+    {
+     "t": "choice",
+     "s": "Am Abend gab [n]der König[/n] ein Fest.",
+     "q": "Welches Satzglied ist unterstrichen?",
+     "o": [
+      "Subjekt",
+      "Akkusativobjekt",
+      "Dativobjekt",
+      "Genitivobjekt"
+     ],
+     "a": "Subjekt",
+     "tip": "Wer gab ein Fest?",
+     "explain": "<b>Wer</b> gab ein Fest? Der König → <b>Subjekt</b>."
+    }
+   ]
+  },
+  {
+   "id": "F",
+   "name": "Rätsel-Turm",
+   "ico": "🦉",
+   "reward": "Turmspitze",
+   "teaser": "Verkleidete Konjunktionen",
+   "steps": [
+    {
+     "t": "info",
+     "html": "<div class=\"npc\"><span class=\"face\">🦉</span><div class=\"say\">Ich bin die Eule. In Klassenarbeiten tauchen manchmal <b>verkleidete</b> Konjunktionen auf. Sie sehen anders aus, bedeuten aber dasselbe wie die, die du schon kennst.</div></div>\n        <div class=\"tbl\"><table><thead><tr><th>Verkleidung</th><th>bedeutet wie</th><th>Art</th></tr></thead><tbody>\n          <tr><td><b>auch wenn</b></td><td>obwohl</td><td>Konzessivsatz</td></tr>\n          <tr><td><b>um … zu</b></td><td>damit (ohne eigenes Subjekt)</td><td>Finalsatz</td></tr>\n          <tr><td><b>da</b></td><td>weil</td><td>Kausalsatz</td></tr>\n          <tr><td><b>wenn … sollte</b></td><td>falls</td><td>Konditionalsatz</td></tr>\n        </tbody></table></div>\n        <div class=\"merk\"><b>Beispiele:</b><span>Ich gehe raus, <b>auch wenn</b> es regnet. (Konzessivsatz)</span><span><b>Um</b> fit <b>zu</b> werden, trainiert sie. (Finalsatz: Wozu trainiert sie?)</span><span><b>Wenn</b> ich gewinnen <b>sollte</b>, springe ich vor Freude. (Konditionalsatz)</span></div>"
+    },
+    {
+     "t": "choice",
+     "s": "Ich gehe zum Training, [n]auch wenn ich müde bin[/n].",
+     "q": "Welche Satzart ist der unterstrichene Nebensatz?",
+     "o": [
+      "Temporalsatz",
+      "Kausalsatz",
+      "Finalsatz",
+      "Konzessivsatz",
+      "Konsekutivsatz",
+      "Konditionalsatz",
+      "Modalsatz"
+     ],
+     "a": "Konzessivsatz",
+     "help": "Hilfe: auch wenn = obwohl",
+     "explain": "auch wenn = obwohl → <b>Konzessivsatz</b>."
+    },
+    {
+     "t": "choice",
+     "s": "[n]Um Geld zu sparen[/n], fährt er mit dem Rad.",
+     "q": "Welche Satzart?",
+     "o": [
+      "Temporalsatz",
+      "Kausalsatz",
+      "Finalsatz",
+      "Konzessivsatz",
+      "Konsekutivsatz",
+      "Konditionalsatz",
+      "Modalsatz"
+     ],
+     "a": "Finalsatz",
+     "tip": "Wozu fährt er mit dem Rad?",
+     "explain": "Wozu? Um Geld zu sparen → <b>Finalsatz</b>."
+    },
+    {
+     "t": "choice",
+     "s": "Ich trage eine Mütze, [n]da es kalt ist[/n].",
+     "q": "Welche Satzart?",
+     "o": [
+      "Temporalsatz",
+      "Kausalsatz",
+      "Finalsatz",
+      "Konzessivsatz",
+      "Konsekutivsatz",
+      "Konditionalsatz",
+      "Modalsatz"
+     ],
+     "a": "Kausalsatz",
+     "tip": "da = ?",
+     "explain": "da = weil → <b>Kausalsatz</b>."
+    },
+    {
+     "t": "choice",
+     "s": "[n]Wenn du mir helfen solltest[/n], sind wir schneller fertig.",
+     "q": "Welche Satzart?",
+     "o": [
+      "Temporalsatz",
+      "Kausalsatz",
+      "Finalsatz",
+      "Konzessivsatz",
+      "Konsekutivsatz",
+      "Konditionalsatz",
+      "Modalsatz"
+     ],
+     "a": "Konditionalsatz",
+     "tip": "Kann man „falls“ einsetzen?",
+     "explain": "Falls du mir hilfst … → <b>Konditionalsatz</b>."
+    },
+    {
+     "t": "choice",
+     "s": "[n]Indem er jeden Tag liest[/n], wird er immer besser.",
+     "q": "Welche Satzart?",
+     "o": [
+      "Temporalsatz",
+      "Kausalsatz",
+      "Finalsatz",
+      "Konzessivsatz",
+      "Konsekutivsatz",
+      "Konditionalsatz",
+      "Modalsatz"
+     ],
+     "a": "Modalsatz",
+     "tip": "Wie wird er besser?",
+     "explain": "Auf welche Weise? → <b>Modalsatz</b>."
+    }
+   ]
+  }
+ ],
+ "boss": {
+  "name": "Endboss: Der Eisgolem",
+  "steps": [
+   {
+    "t": "choice",
+    "s": "Wegen des Staus kamen wir zu spät.",
+    "q": "Welcher Nebensatz-Satz ist richtig?",
+    "o": [
+     "Weil es einen Stau gab, kamen wir zu spät.",
+     "Weil es einen Stau gab kamen wir zu spät.",
+     "Obwohl es einen Stau gab, kamen wir zu spät."
+    ],
+    "a": "Weil es einen Stau gab, kamen wir zu spät.",
+    "tip": "Prüf die Konjunktion und das Komma.",
+    "explain": "wegen → weil, und nach dem Nebensatz kommt ein <b>Komma</b>."
+   },
+   {
+    "t": "build",
+    "base": "Trotz des Regens spielten wir Fußball.",
+    "q": "Bau den Satz mit Nebensatz.",
+    "tiles": [
+     "Obwohl",
+     "es",
+     "regnete",
+     ",",
+     "spielten",
+     "wir",
+     "Fußball"
+    ],
+    "sol": [
+     [
+      "Obwohl",
+      "es",
+      "regnete",
+      ",",
+      "spielten",
+      "wir",
+      "Fußball"
+     ]
+    ],
+    "wrong": "Konjunktion, Verb am Ende, Komma, dann gleich das Verb.",
+    "tip": "Obwohl es …",
+    "explain": "<b>Obwohl es regnete, spielten wir Fußball.</b>"
+   },
+   {
+    "t": "choice",
+    "s": "Bevor das Spiel anfing, wärmten wir uns auf.",
+    "q": "Welche Umformung in eine adverbiale Bestimmung ist richtig?",
+    "o": [
+     "Vor Beginn des Spiels wärmten wir uns auf.",
+     "Nach Beginn des Spiels wärmten wir uns auf.",
+     "Vor Beginn des Spiels, wärmten wir uns auf."
+    ],
+    "a": "Vor Beginn des Spiels wärmten wir uns auf.",
+    "tip": "bevor → ? Und denk ans Komma.",
+    "explain": "bevor → <b>vor</b>, kein Komma."
+   },
+   {
+    "t": "split",
+    "s": "Gestern schenkte Oma meinem Bruder ein Fahrrad.",
+    "cuts": [
+     0,
+     1,
+     2,
+     4
+    ],
+    "q": "Setz die Striche zwischen die Satzglieder.",
+    "tip": "Umstellprobe: Oma schenkte gestern …",
+    "explain": "<b>Gestern | schenkte | Oma | meinem Bruder | ein Fahrrad.</b>"
+   },
+   {
+    "t": "choice",
+    "s": "Oma schenkte [n]meinem Bruder[/n] ein Fahrrad.",
+    "q": "Welches Satzglied ist unterstrichen?",
+    "o": [
+     "Subjekt",
+     "Akkusativobjekt",
+     "Dativobjekt",
+     "Genitivobjekt"
+    ],
+    "a": "Dativobjekt",
+    "tip": "Wem schenkte Oma ein Fahrrad?",
+    "explain": "<b>Wem?</b> → Dativobjekt."
+   },
+   {
+    "t": "mark",
+    "s": "Der Bus fährt um acht Uhr ab.",
+    "sol": [
+     2,
+     6
+    ],
+    "q": "Klick alle Teile des Prädikats an.",
+    "tip": "abfahren",
+    "explain": "<b>fährt … ab</b>."
+   },
+   {
+    "t": "choice",
+    "s": "[n]Um pünktlich zu sein[/n], stehe ich früh auf.",
+    "q": "Welche Satzart?",
+    "o": [
+     "Temporalsatz",
+     "Kausalsatz",
+     "Finalsatz",
+     "Konzessivsatz",
+     "Konsekutivsatz",
+     "Konditionalsatz",
+     "Modalsatz"
+    ],
+    "a": "Finalsatz",
+    "tip": "Wozu stehe ich früh auf?",
+    "explain": "um … zu → Wozu? → <b>Finalsatz</b>."
+   },
+   {
+    "t": "choice",
+    "chat": "Ich kann heute nicht kommen, weil ich bin krank.",
+    "from": "Nachricht aus dem Dorf",
+    "q": "Was ist falsch?",
+    "o": [
+     "Das Verb muss ans Ende: … weil ich krank bin.",
+     "Es fehlt ein Komma.",
+     "Alles richtig."
+    ],
+    "a": "Das Verb muss ans Ende: … weil ich krank bin.",
+    "tip": "Was macht „weil“ mit dem Verb?",
+    "explain": "<b>… weil ich krank bin.</b> Gute Besserung!"
+   },
+   {
+    "t": "write",
+    "s": "Bei schönem Wetter grillen wir.",
+    "q": "Schreib selbst: Forme in einen Nebensatz um und schreib die Art in Klammern dahinter.",
+    "model": "Wenn das Wetter schön ist, grillen wir. (Konditionalsatz)",
+    "check": [
+     "Konjunktion „wenn“ oder „falls“.",
+     "Verb am Ende des Nebensatzes (ist).",
+     "Komma nach dem Nebensatz.",
+     "Art: (Konditionalsatz). „Als“ wäre falsch, es geht um eine Bedingung."
+    ]
+   }
+  ]
+ }
+}
