@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>*{box-sizing:border-box}body{margin:0}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Blockdorf in Gefahr</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout: eine Spielspalte (max 720px), oben HUD-Leiste, darunter wechselnde Szenen; Blockwelt bei Nacht, Gras/Erde-Kanten, Diamant als einziger Akzent */
+:root {
+  --sky: #10171f;
+  --panel: #1b2630;
+  --panel-2: #24323e;
+  --line: #3a4b58;
+  --fg: #eef3ec;
+  --muted: #a7b6ad;
+  --grass: #5fae3a;
+  --grass-dark: #3f7d24;
+  --dirt: #7a5133;
+  --dirt-dark: #573922;
+  --diamond: #4fe0d6;
+  --good: #7bdc5a;
+  --bad: #ff6b5e;
+  --gold: #f5c542;
+  --mark: rgba(79, 224, 214, .22);
+  --display: "Pixelify Sans", "Courier New", monospace;
+  --body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  background: var(--sky);
+  background-image:
+    radial-gradient(2px 2px at 12% 18%, #ffffff55 50%, transparent 51%),
+    radial-gradient(2px 2px at 72% 9%, #ffffff44 50%, transparent 51%),
+    radial-gradient(2px 2px at 88% 31%, #ffffff33 50%, transparent 51%),
+    radial-gradient(2px 2px at 35% 6%, #ffffff33 50%, transparent 51%);
+  color: var(--fg);
+  font-family: var(--body);
+  font-size: 1.05rem;
+  line-height: 1.55;
+  padding-inline: 16px;
+  padding-block: 16px 48px;
+}
+.wrap { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+h1, h2, h3, .px { font-family: var(--display); font-weight: 700; letter-spacing: .02em; text-wrap: balance; }
+h1 { font-size: clamp(1.9rem, 6vw, 2.8rem); line-height: 1.05; margin: 0; }
+h2 { font-size: 1.6rem; margin: 0; line-height: 1.15; }
+h3 { font-size: 1.15rem; margin: 0; }
+p { margin: 0; }
+
+/* HUD */
+.hud {
+  display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; justify-content: space-between;
+  font-family: var(--display); font-size: 1.05rem;
+  background: var(--panel); border: 3px solid var(--line); padding: 8px 12px;
+}
+.hud .stat { display: flex; gap: 6px; align-items: center; font-variant-numeric: tabular-nums; }
+.gem { width: 14px; height: 14px; background: var(--diamond); transform: rotate(45deg); box-shadow: inset -3px -3px 0 #1fa79e; display: inline-block; }
+.heart { color: var(--bad); letter-spacing: 2px; }
+.heart .off { color: var(--line); }
+.bookbtn { margin-left: auto; }
+
+/* Grass block panel */
+.block {
+  background: var(--panel);
+  border: 3px solid #0b1015;
+  box-shadow: inset 0 10px 0 var(--grass), inset 0 14px 0 var(--grass-dark);
+  padding: 30px 20px 22px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.block.stone { box-shadow: inset 0 10px 0 #7d8a92, inset 0 14px 0 #5a666d; }
+.block.nether { box-shadow: inset 0 10px 0 #c2412f, inset 0 14px 0 #7d241a; }
+.block.end { box-shadow: inset 0 10px 0 #d9d48a, inset 0 14px 0 #8f8a4c; }
+.eyebrow { font-family: var(--display); font-size: .9rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+
+.sentence {
+  font-size: 1.3rem; line-height: 1.6; background: var(--panel-2); padding: 14px 16px; border: 2px solid var(--line);
+}
+.sentence mark { background: var(--mark); color: var(--diamond); padding: 0 3px; font-weight: 700; }
+.sentence .ns { border-bottom: 3px solid var(--diamond); }
+.sentence .gap { display: inline-block; min-width: 4.5em; border-bottom: 3px dashed var(--gold); text-align: center; color: var(--gold); font-weight: 700; }
+
+.opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+button, .btn {
+  font: inherit; font-family: var(--display); font-weight: 500; font-size: 1.05rem;
+  color: var(--fg); background: #4a5560; border: 3px solid #0b1015;
+  box-shadow: inset -4px -4px 0 #343d45, inset 4px 4px 0 #6d7984;
+  padding: 10px 14px; cursor: pointer; text-align: center; min-height: 48px;
+}
+button:hover:not(:disabled) { background: #56636f; }
+button:focus-visible { outline: 3px solid var(--diamond); outline-offset: 2px; }
+button:disabled { cursor: default; opacity: .9; }
+button.primary { background: var(--grass-dark); box-shadow: inset -4px -4px 0 #2c5a19, inset 4px 4px 0 #6fbb48; }
+button.primary:hover:not(:disabled) { background: #4a8f2b; }
+button.small { font-size: .9rem; min-height: 38px; padding: 6px 10px; }
+button.right { background: #2f6d22; box-shadow: inset -4px -4px 0 #1f4a16, inset 4px 4px 0 var(--good); }
+button.wrong { background: #7a2a22; box-shadow: inset -4px -4px 0 #4f1a15, inset 4px 4px 0 var(--bad); }
+button .sub { display: block; font-family: var(--body); font-size: .8rem; color: var(--muted); font-weight: 400; }
+
+.feedback { border: 3px solid var(--line); padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; background: var(--panel-2); }
+.feedback.ok { border-color: var(--good); }
+.feedback.no { border-color: var(--bad); }
+.feedback .head { font-family: var(--display); font-size: 1.2rem; }
+.feedback.ok .head { color: var(--good); }
+.feedback.no .head { color: var(--bad); }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+/* Map */
+.map { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.world { border: 3px solid #0b1015; padding: 12px; display: flex; flex-direction: column; gap: 4px; min-height: 108px; background: var(--panel-2); }
+.world .n { font-family: var(--display); font-size: 1.1rem; }
+.world .d { font-size: .88rem; color: var(--muted); }
+.world.done { outline: 3px solid var(--good); }
+.world.now { outline: 3px solid var(--diamond); }
+.w1 { box-shadow: inset 0 6px 0 var(--grass); }
+.w2 { box-shadow: inset 0 6px 0 #7d8a92; }
+.w3 { box-shadow: inset 0 6px 0 #c2412f; }
+.w4 { box-shadow: inset 0 6px 0 #d9d48a; }
+
+.progress { display: flex; gap: 3px; flex-wrap: wrap; }
+.progress span { width: 16px; height: 16px; background: var(--dirt-dark); border: 2px solid #0b1015; }
+.progress span.ok { background: var(--good); }
+.progress span.no { background: var(--bad); }
+.progress span.cur { background: var(--diamond); }
+
+label { font-family: var(--display); }
+input[type=text] { font: inherit; font-size: 1.1rem; padding: 10px 12px; background: var(--panel-2); color: var(--fg); border: 3px solid var(--line); width: 100%; max-width: 320px; }
+input[type=text]:focus-visible { outline: 3px solid var(--diamond); }
+
+.tool { font-size: 3rem; line-height: 1; }
+.chest { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.chest .slot { background: var(--panel-2); border: 3px solid #0b1015; padding: 10px; display: flex; flex-direction: column; gap: 2px; }
+.chest .slot b { font-family: var(--display); font-weight: 500; }
+.bar { height: 10px; background: var(--dirt-dark); border: 2px solid #0b1015; }
+.bar i { display: block; height: 100%; background: var(--good); }
+.bar i.mid { background: var(--gold); }
+.bar i.low { background: var(--bad); }
+
+textarea { width: 100%; min-height: 220px; font-family: ui-monospace, Consolas, monospace; font-size: .85rem; background: #0b1015; color: var(--fg); border: 3px solid var(--line); padding: 10px; }
+
+/* Rezeptbuch */
+.book { position: fixed; inset: 0; background: rgba(5, 8, 11, .82); display: flex; align-items: flex-start; justify-content: center; padding: calc(16px + env(safe-area-inset-top, 0px)) 16px 16px; overflow-y: auto; z-index: 10; }
+.book .page { background: #e9dcc0; color: #2b2116; border: 4px solid #5b4127; max-width: 760px; width: 100%; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.book h2 { color: #2b2116; }
+.tablewrap { overflow-x: auto; }
+.book table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: .95rem; }
+.book th, .book td { border: 2px solid #8b6d48; padding: 6px 8px; text-align: left; vertical-align: top; }
+.book th { font-family: var(--display); background: #d8c49d; }
+.book td:first-child { font-weight: 700; color: #8a2a52; }
+.book button { color: var(--fg); }
+
+.small-note { font-size: .9rem; color: var(--muted); }
+@media (prefers-reduced-motion: no-preference) {
+  .pop { animation: pop .25s ease-out; }
+  @keyframes pop { from { transform: scale(.96); opacity: .4; } to { transform: none; opacity: 1; } }
+}
+</style>
+<style>
+.tiles { display: flex; flex-wrap: wrap; gap: 8px; min-height: 52px; }
+.tiles.slot { background: var(--panel-2); border: 2px dashed var(--line); padding: 8px; }
+.tile { font-family: var(--body); font-weight: 700; font-size: 1.1rem; background: var(--dirt); box-shadow: inset -4px -4px 0 var(--dirt-dark), inset 4px 4px 0 #9a6a45; min-height: 44px; }
+.tile:hover:not(:disabled) { background: #8a5d3b; }
+.prefix { font-size: 1.25rem; }
+.verb { border-bottom: 3px solid var(--gold); color: var(--gold); font-weight: 700; }
+.sentence .nsx { border-bottom: 3px solid var(--diamond); }
+.merk { border-left: 6px solid var(--gold); padding: 10px 14px; background: var(--panel-2); display: flex; flex-direction: column; gap: 6px; }
+.rule { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.rule > div { background: var(--panel-2); border: 2px solid var(--line); padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; }
+.rule b.h { font-family: var(--display); font-size: 1.1rem; color: var(--diamond); font-weight: 500; }
+.village { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.house { border: 3px solid #0b1015; background: var(--panel-2); padding: 12px; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+.house .ico { font-size: 2rem; line-height: 1; }
+.house.done { outline: 3px solid var(--good); }
+.house.locked { opacity: .55; }
+.npc { display: flex; gap: 12px; align-items: flex-start; }
+.npc .face { font-size: 2.2rem; line-height: 1; flex: none; }
+.npc .say { background: var(--panel-2); border: 2px solid var(--line); padding: 10px 12px; min-width: 0; }
+.hp { height: 14px; background: var(--dirt-dark); border: 2px solid #0b1015; }
+.hp i { display: block; height: 100%; background: var(--bad); transition: width .3s; }
+.chat { background: #0b1015; border: 2px solid var(--line); padding: 10px 12px; font-size: 1.15rem; }
+.chat small { color: var(--muted); display: block; font-size: .85rem; }
+.say-btn { align-self: flex-start; font-size: .85rem; min-height: 36px; padding: 4px 10px; }
+.npc .say { display: flex; flex-direction: column; gap: 8px; }
+</style>
+
+<div class="wrap" id="app"></div>
+
+<script>
+const shuffle = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+// Satz-Markup: [v]Verb[/v] = Verb (nur mit Hilfe markiert), [n]…[/n] = Nebensatz unterstrichen, ___ = Lücke
+function fmt(s, showVerb, gapFill) {
+  let h = esc(s);
+  h = h.replace(/\[v\](.*?)\[\/v\]/g, (m, x) => showVerb ? `<span class="verb">${x}</span>` : x);
+  h = h.replace(/\[n\](.*?)\[\/n\]/g, '<span class="nsx">$1</span>');
+  h = h.replace('___', `<span class="gap">${gapFill ? esc(gapFill) : '?'}</span>`);
+  return h;
+}
+const NAMES = ['Temporalsatz', 'Kausalsatz', 'Finalsatz', 'Konzessivsatz', 'Konsekutivsatz', 'Konditionalsatz', 'Modalsatz'];
+const ZEIT = ['als', 'wenn', 'nachdem', 'während', 'bis', 'bevor', 'sobald'];
+
+const MODULE = [
+  {
+    id: 'A', name: 'Verb-Schmiede', ico: '🧱', reward: 'Mauer', npc: '🔨', who: 'Der Schmied',
+    teaser: 'denn oder weil? Das Verb verrät es.',
+    steps: [
+      { t: 'info', html: `<div class="npc"><span class="face">🔨</span><div class="say">Hallo! Heute Nacht kommen Zombies. Ich baue eine Mauer, aber in meinen Sätzen ist das <b>Verb</b> durcheinandergeraten. Probier erst einmal selbst, wie es richtig klingt. Danach erkläre ich dir die Regel.</div></div>` },
+      { t: 'build', q: 'Leg die Wörter so hin, dass der Satz richtig klingt. Lies ihn dir leise vor.', prefix: 'Ich baue eine Mauer, weil', tiles: [['die Zombies'], ['heute Nacht'], ['kommen', 1]], rule: 'end',
+        wrong: 'Lies es laut vor. Klingt das wie ein normaler Satz? Probier, wo „kommen“ hingehört.', tip: 'Nach „weil“ wandert das Verb an eine ganz bestimmte Stelle. Probier mal ganz hinten.', explain: 'Genau: <b>… weil die Zombies heute Nacht <span class="verb">kommen</span>.</b> Das Verb steht ganz am Ende.' },
+      { t: 'build', q: 'Jetzt mit „denn“. Wie klingt es hier richtig?', prefix: 'Ich baue eine Mauer, denn', tiles: [['die Zombies'], ['heute Nacht'], ['kommen', 1]], rule: 'second',
+        wrong: 'Nach „denn“ klingt es anders als nach „weil“. Probier „kommen“ an einer anderen Stelle.', tip: 'Nach „denn“ kommt erst ein Satzteil und dann gleich das Verb.', explain: 'Genau: <b>… denn heute Nacht <span class="verb">kommen</span> die Zombies.</b> Das Verb steht an 2. Stelle.' },
+      { t: 'info', html: `<h3>Die Regel</h3>
+        <div class="rule">
+          <div><b class="h">weil</b><span>… weil die Zombies heute Nacht <span class="verb">kommen</span>.</span><span>Verb <b>am Ende</b> → das ist ein <b>Nebensatz</b>.</span><span>Hauptsatz + Nebensatz = <b>Satzgefüge</b>.</span></div>
+          <div><b class="h">denn</b><span>… denn heute Nacht <span class="verb">kommen</span> die Zombies.</span><span>Verb an <b>2. Stelle</b> → das ist ein <b>Hauptsatz</b>.</span><span>Hauptsatz + Hauptsatz = <b>Satzreihe</b>.</span></div>
+        </div>
+        <div class="merk"><b>Merksatz: „weil“ schiebt das Verb ans Ende. „denn“ lässt es an 2. Stelle.</b>
+        <span>Wie „weil“ machen es alle Nebensatz-Wörter: da, obwohl, damit, sodass, als, nachdem, wenn, falls …</span>
+        <span>Wie „denn“ machen es: aber, und, oder, sondern.</span></div>` },
+      { t: 'choice', s: 'Ich esse einen Apfel, ___ ich Hunger [v]habe[/v].', q: 'weil oder denn?', o: ['weil', 'denn'], a: 'weil', help: 'Hilfe: Das Verb ist gelb markiert. Steht es am Ende oder an 2. Stelle?', explain: '„habe“ steht am Ende → Nebensatz → <b>weil</b>.' },
+      { t: 'choice', s: 'Ich bleibe drin, ___ draußen [v]ist[/v] es gefährlich.', q: 'weil oder denn?', o: ['weil', 'denn'], a: 'denn', help: 'Hilfe: Das Verb ist gelb markiert. Steht es am Ende oder an 2. Stelle?', explain: '„ist“ steht an 2. Stelle → Hauptsatz → <b>denn</b>.' },
+      { t: 'choice', s: 'Wir gehen zurück, ___ der Weg zu gefährlich [v]ist[/v].', q: 'weil oder denn? Jetzt ohne Markierung.', o: ['weil', 'denn'], a: 'weil', tip: 'Such zuerst das Verb im Satzteil nach der Lücke.', explain: '„ist“ steht am Ende → <b>weil</b>.' },
+      { t: 'choice', s: 'Mia gibt auf, ___ ihr Akku [v]ist[/v] leer.', q: 'weil oder denn?', o: ['weil', 'denn'], a: 'denn', tip: 'Such zuerst das Verb im Satzteil nach der Lücke.', explain: '„ist“ steht an 2. Stelle → <b>denn</b>.' },
+      { t: 'choice', s: 'Ich lache, weil der Witz gut [v]ist[/v].', q: 'Satzreihe oder Satzgefüge?', o: ['Satzreihe', 'Satzgefüge'], a: 'Satzgefüge', tip: 'Wo steht das Verb nach „weil“?', explain: 'Verb am Ende → Nebensatz → <b>Satzgefüge</b>.' },
+      { t: 'build', q: 'Bau den Satz selbst fertig.', prefix: 'Ich gehe nach Hause, denn', tiles: [['meine Rüstung'], ['kaputt'], ['ist', 1]], rule: 'second',
+        wrong: 'Nach „denn“ steht das Verb an 2. Stelle.', tip: 'Erst „meine Rüstung“, dann gleich das Verb.', explain: '<b>… denn meine Rüstung <span class="verb">ist</span> kaputt.</b>' },
+    ]
+  },
+  {
+    id: 'B', name: 'Fackel-Lager', ico: '🔥', reward: 'Fackeln', npc: '👩‍🌾', who: 'Die Bäuerin',
+    teaser: 'damit oder sodass? Ziel oder Folge.',
+    steps: [
+      { t: 'info', html: `<div class="npc"><span class="face">👩‍🌾</span><div class="say">Ich erzähle dir zwei kurze Geschichten über Fackeln. Lies genau hin. Eine davon ist ein <b>Plan</b>, die andere ist einfach <b>passiert</b>.</div></div>` },
+      { t: 'choice', s: 'A: Ich stelle Fackeln auf, damit keine Monster kommen.<br>B: Ich vergesse die Fackeln, sodass Monster kommen.', raw: true, q: 'In welchem Satz hat jemand etwas mit Absicht geplant?', o: ['Satz A', 'Satz B'], a: 'Satz A', tip: 'Wer vergisst denn etwas mit Absicht?', explain: 'Genau. In A ist „keine Monster“ das <b>Ziel</b>. In B kommen die Monster einfach als <b>Folge</b>, das wollte niemand.' },
+      { t: 'info', html: `<h3>Die Regel</h3>
+        <div class="rule">
+          <div><b class="h">damit</b><span>= ein <b>Ziel</b>, jemand will es</span><span>Frage: <b>Wozu?</b></span><span>→ <b>Finalsatz</b></span><span>Ich stelle Fackeln auf, damit keine Monster kommen.</span></div>
+          <div><b class="h">sodass</b><span>= eine <b>Folge</b>, sie passiert einfach</span><span>Frage: <b>Mit welcher Folge?</b></span><span>→ <b>Konsekutivsatz</b></span><span>Ich vergesse die Fackeln, sodass Monster kommen.</span></div>
+        </div>
+        <div class="merk"><b>Trick: Frag dich „Wollte das jemand?“ Ja → damit. Nein, es passiert einfach → sodass.</b></div>` },
+      { t: 'choice', s: 'Ich pflanze Weizen, ___ ich Brot backen kann.', q: 'damit oder sodass?', o: ['damit', 'sodass'], a: 'damit', help: 'Hilfe: Wollte das jemand? Ja, Brot backen ist der Plan.', explain: 'Brot backen ist das Ziel → <b>damit</b> → Finalsatz.' },
+      { t: 'choice', s: 'Der Creeper explodiert, ___ ein Loch im Boden entsteht.', q: 'damit oder sodass?', o: ['damit', 'sodass'], a: 'sodass', help: 'Hilfe: Wollte jemand das Loch? Nein, es passiert einfach.', explain: 'Das Loch ist eine Folge → <b>sodass</b> → Konsekutivsatz.' },
+      { t: 'choice', s: 'Wir bauen ein Dach, ___ wir nicht nass werden.', q: 'damit oder sodass? Jetzt ohne Hilfe.', o: ['damit', 'sodass'], a: 'damit', tip: 'Wollte das jemand?', explain: 'Nicht nass werden ist das Ziel → <b>damit</b>.' },
+      { t: 'choice', s: 'Ich renne viel zu schnell, ___ ich in die Lava falle.', q: 'damit oder sodass?', o: ['damit', 'sodass'], a: 'sodass', tip: 'Will man in die Lava fallen?', explain: 'Das wollte niemand, es ist eine Folge → <b>sodass</b>.' },
+      { t: 'choice', s: 'Ich spare Smaragde, [n]damit ich ein Schwert kaufen kann[/n].', q: 'Welche Frage passt zum unterstrichenen Nebensatz?', o: ['Wozu?', 'Mit welcher Folge?', 'Warum?', 'Wann?'], a: 'Wozu?', tip: 'damit = Ziel. Welche Frage fragt nach dem Ziel?', explain: 'damit → Ziel → <b>Wozu?</b>' },
+      { t: 'choice', s: 'Es schneit stark, [n]sodass die Schule ausfällt[/n].', q: 'Welche Satzart ist der unterstrichene Nebensatz?', o: ['Finalsatz', 'Konsekutivsatz', 'Kausalsatz', 'Temporalsatz'], a: 'Konsekutivsatz', tip: 'sodass = Folge.', explain: 'sodass → Folge → <b>Konsekutivsatz</b>.' },
+    ]
+  },
+  {
+    id: 'C', name: 'Zeit-Turm', ico: '🗼', reward: 'Turm', npc: '🧙', who: 'Der Turmwächter',
+    teaser: 'als, nachdem, während: Wann?',
+    steps: [
+      { t: 'info', html: `<div class="npc"><span class="face">🧙</span><div class="say">Ich erzähle dir, was gestern im Turm passiert ist. Pass auf, welcher Teil des Satzes sagt, <b>wann</b> etwas passiert.</div></div>` },
+      { t: 'choice', s: '[n]Als ich die Truhe öffnete[/n], fand ich drei Diamanten.', q: 'Wann fand ich die Diamanten?', o: ['als ich die Truhe öffnete', 'drei Diamanten', 'ich'], a: 'als ich die Truhe öffnete', tip: 'Such den Teil, der eine Zeit angibt.', explain: 'Der Nebensatz sagt, <b>wann</b> etwas passiert. Darum heißt er <b>Temporalsatz</b>. „Tempus“ heißt Zeit.' },
+      { t: 'info', html: `<h3>Die Regel</h3>
+        <div class="rule">
+          <div><b class="h">Temporalsatz</b><span>sagt, <b>wann</b> etwas passiert</span><span>Frage: <b>Wann? Wie lange?</b></span><span>Wörter: <b>als, wenn, nachdem, während, bis, bevor, sobald</b></span></div>
+          <div><b class="h">als</b><span>= ein Zeitpunkt in der <b>Vergangenheit</b></span><span>„damals, als …“</span><span>Als ich klein war, hatte ich Angst im Dunkeln.</span></div>
+        </div>
+        <div class="merk"><b>Merkspruch zum laut Aufsagen:</b><span>„Als, wenn, nachdem, während,<br>bis, bevor und sobald:<br>Das sind die Zeit-Wörter,<br>die merk ich mir bald!“</span></div>` },
+      { t: 'choice', s: '[n]Nachdem wir gegessen hatten[/n], gingen wir in die Mine.', q: 'Welche Satzart ist der unterstrichene Nebensatz?', o: ['Temporalsatz', 'Modalsatz', 'Kausalsatz', 'Finalsatz'], a: 'Temporalsatz', help: 'Hilfe: Frag dich: Wann gingen wir in die Mine?', explain: '„nachdem“ ist ein Zeit-Wort → <b>Temporalsatz</b>.' },
+      { t: 'choice', s: '[n]Als der Drache kam[/n], versteckten wir uns.', q: 'Welche Satzart? Jetzt ohne Hilfe.', o: ['Temporalsatz', 'Modalsatz', 'Konditionalsatz', 'Konzessivsatz'], a: 'Temporalsatz', tip: 'Denk an den Merkspruch.', explain: '„als“ = damals → <b>Temporalsatz</b>.' },
+      { t: 'choice', s: '___ du schläfst, wächst der Weizen.', q: 'Welches Wort passt?', o: ['Während', 'Damit', 'Sodass', 'Obwohl'], a: 'Während', tip: 'Der Satz sagt, wann der Weizen wächst.', explain: '<b>Während</b> du schläfst … → Zeit → Temporalsatz.' },
+      { t: 'multi', q: 'Sammle alle 7 Zeit-Wörter für den Temporalsatz. Dann auf „Sammeln“.', pool: [...ZEIT, 'weil', 'damit', 'sodass', 'obwohl', 'indem', 'falls', 'denn'], a: ZEIT, tip: 'Sag den Merkspruch leise auf: „Als, wenn, nachdem, während …“', explain: 'Die 7 Zeit-Wörter: <b>als, wenn, nachdem, während, bis, bevor, sobald</b>.' },
+    ]
+  },
+];
+
+const BOSS = { id: 'X', name: 'Endboss: Der Schattenritter', ico: '⚔️', reward: 'Sieg', steps: [
+  { t: 'choice', s: 'Ich bleibe zu Hause, ___ ein Gewitter kommt.', q: 'Welches Wort passt?', o: ['weil', 'denn', 'damit', 'sodass'], a: 'weil', tip: 'Wo steht das Verb? Und ist es ein Grund, ein Ziel oder eine Folge?', explain: 'Grund, Verb am Ende → <b>weil</b>.' },
+  { t: 'choice', chat: 'Ich komme später, weil mein Akku ist leer.', from: 'Nachricht von Dorfbewohner Kalle', q: 'Kalle hat einen Fehler gemacht. Welchen?', o: ['Das Verb muss ans Ende: … weil mein Akku leer ist.', 'Es fehlt ein Komma.', 'Alles richtig.'], a: 'Das Verb muss ans Ende: … weil mein Akku leer ist.', tip: 'Was macht „weil“ mit dem Verb?', explain: 'Nach „weil“ muss das Verb ans Ende: <b>… weil mein Akku leer ist.</b>' },
+  { t: 'choice', chat: 'Ich spare Smaragde, sodass ich ein Schwert kaufen kann.', from: 'Nachricht von Dorfbewohnerin Lea', q: 'Lea hat einen Fehler gemacht. Welchen?', o: ['Es ist ein Ziel, also „damit“ statt „sodass“.', 'Das Verb steht an der falschen Stelle.', 'Alles richtig.'], a: 'Es ist ein Ziel, also „damit“ statt „sodass“.', tip: 'Wollte Lea das Schwert?', explain: 'Das Schwert ist ein Ziel → <b>damit</b>.' },
+  { t: 'build', q: 'Bau den Satz fertig.', prefix: 'Ich verstecke mich im Haus, weil', tiles: [['der Drache'], ['über dem Dorf'], ['fliegt', 1]], rule: 'end', wrong: 'Denk an den Merksatz der Verb-Schmiede.', tip: '„weil“ schiebt das Verb ans Ende.', explain: '<b>… weil der Drache über dem Dorf <span class="verb">fliegt</span>.</b>' },
+  { t: 'choice', s: '[n]Als die Sonne aufging[/n], kamen die Schafe aus dem Stall.', q: 'Welche Satzart ist der unterstrichene Nebensatz?', o: NAMES, a: 'Temporalsatz', tip: 'Frag: Wann kamen die Schafe?', explain: '„als“ → Zeit → <b>Temporalsatz</b>.' },
+  { t: 'choice', s: 'Der Zombie steht in der Sonne, [n]sodass er verbrennt[/n].', q: 'Welche Frage passt zum Nebensatz?', o: ['Mit welcher Folge?', 'Wozu?', 'Wann?', 'Warum?'], a: 'Mit welcher Folge?', tip: 'Wollte der Zombie verbrennen?', explain: 'sodass → Folge → <b>Mit welcher Folge?</b>' },
+  { t: 'choice', s: 'Ich habe kein Holz mehr, denn ich habe alles verbaut.', q: 'Satzreihe oder Satzgefüge?', o: ['Satzreihe', 'Satzgefüge'], a: 'Satzreihe', tip: 'Wo steht das Verb nach „denn“?', explain: '„denn“ → Verb an 2. Stelle → zwei Hauptsätze → <b>Satzreihe</b>.' },
+]};
+
+// Vorlesen über die Sprachausgabe des Browsers (nur Lernteile: Regeln, Merksätze, Tipps, Erklärungen)
+const TTS = typeof window !== 'undefined' && 'speechSynthesis' in window;
+let ttsVoice = null;
+function pickVoice() { try { const v = speechSynthesis.getVoices().filter(x => /^de/i.test(x.lang)); ttsVoice = v.find(x => /natural|online|google/i.test(x.name)) || v[0] || null; } catch (e) { ttsVoice = null; } }
+if (TTS) { pickVoice(); try { speechSynthesis.onvoiceschanged = pickVoice; } catch (e) {} }
+function resetSpeakBtns() { document.querySelectorAll('.say-btn[data-on]').forEach(b => { delete b.dataset.on; b.textContent = '🔊 Vorlesen'; }); }
+function stopSpeak() { if (TTS) { try { speechSynthesis.cancel(); } catch (e) {} resetSpeakBtns(); } }
+function speakText(t, btn) {
+  if (!TTS) return;
+  const wasOn = btn && btn.dataset.on;
+  stopSpeak();
+  if (wasOn) return;
+  t = t.replace(/→/g, ' wird zu ').replace(/[|·]/g, ', ').replace(/…/g, ' ').replace(/\t+/g, ', ').replace(/\s*\n+\s*/g, '. ').replace(/💡/g, '');
+  const u = new SpeechSynthesisUtterance(t);
+  u.lang = 'de-DE'; if (ttsVoice) u.voice = ttsVoice; u.rate = 0.95;
+  if (btn) { btn.dataset.on = '1'; btn.textContent = '⏹ Stopp'; u.onend = u.onerror = () => { delete btn.dataset.on; btn.textContent = '🔊 Vorlesen'; }; }
+  try { speechSynthesis.speak(u); } catch (e) {}
+}
+function addSpeakers() {
+  if (!TTS) return;
+  app.querySelectorAll('.npc .say, .rule, .tbl, .merk, .feedback > p').forEach(el => {
+    const text = el.innerText;
+    if (!text || !text.trim()) return;
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'small say-btn'; b.textContent = '🔊 Vorlesen';
+    b.onclick = () => speakText(text, b);
+    if (el.matches('.say, .merk')) el.appendChild(b); else el.insertAdjacentElement('afterend', b);
+  });
+}
+
+// Anmeldung mit Name + PIN und automatisches Senden des Ergebnisses an Svetlanas n8n. Ohne Verbindung läuft alles wie vorher (Ergebnis kopieren).
+const API = 'https://automation.svetlana-voelker.de/webhook/lernspiel';
+const NET = { pin: '', online: false, sent: '' };
+async function callApi(body) {
+  const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 8000);
+  try {
+    const r = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: ctl.signal });
+    let j = {}; try { j = await r.json(); } catch (e) {}
+    return { status: r.status, ok: !!j.ok, fehler: j.fehler };
+  } catch (e) { return { status: 0, ok: false, fehler: 'netz' }; } finally { clearTimeout(t); }
+}
+async function login(goOn) {
+  const $ = id => document.getElementById(id);
+  const name = $('name').value.trim(), pin = $('pin').value.trim(), msg = $('loginMsg');
+  if (!name) { msg.textContent = 'Bitte gib deinen Spielernamen ein.'; $('name').focus(); return; }
+  if (!/^[0-9]{4}$/.test(pin)) { msg.textContent = 'Die PIN hat genau 4 Ziffern.'; $('pin').focus(); return; }
+  msg.textContent = 'Anmelden …'; $('go').disabled = true;
+  const r = await callApi({ aktion: 'login', spieler: name, pin });
+  $('go').disabled = false;
+  if (r.status === 403) { msg.textContent = 'Diese PIN passt nicht zu diesem Namen. Versuch es noch einmal.'; $('pin').value = ''; $('pin').focus(); return; }
+  NET.online = r.ok; NET.pin = r.ok ? pin : '';
+  S.name = name; S.start = Date.now(); S.netNote = r.ok ? '' : 'Keine Verbindung: Am Ende das Ergebnis bitte kopieren und schicken.';
+  goOn();
+}
+async function sendResult(spiel, richtig, gesamt, bericht) {
+  if (!NET.online || NET.sent) return;
+  NET.sent = 'läuft';
+  const r = await callApi({ aktion: 'ergebnis', spieler: S.name, pin: NET.pin, spiel, richtig, gesamt, minuten: S.start ? Math.round((Date.now() - S.start) / 60000) : 0, bericht });
+  NET.sent = r.ok ? 'ok' : 'fehler';
+  const el = document.getElementById('sendMsg');
+  if (el) el.textContent = r.ok ? '✓ Dein Ergebnis wurde automatisch gespeichert. Du musst nichts mehr schicken.' : 'Speichern hat nicht geklappt. Bitte das Ergebnis kopieren und schicken.';
+}
+
+let S = fresh();
+function fresh() { return { screen: 'start', name: '', mod: null, i: 0, done: [], placed: [], pool: [], sel: [], tries: 0, shown: false, solved: false, tip: false, log: [], tips: 0, start: null, bossHp: 0, opts: null }; }
+const app = document.getElementById('app');
+const curMod = () => S.mod === 'X' ? BOSS : MODULE.find(m => m.id === S.mod);
+
+function hud() {
+  return `<div class="hud"><span class="stat">${esc(S.name || 'Spieler')}</span>
+    <span class="stat">${MODULE.map(m => S.done.includes(m.id) ? m.ico : '⬛').join(' ')}</span>
+    <span class="stat"><span class="gem"></span> ${S.log.filter(l => l.ok).length}</span></div>`;
+}
+
+function villageHtml() {
+  const all = MODULE.every(m => S.done.includes(m.id));
+  return `<div class="village">${MODULE.map(m => `<div class="house ${S.done.includes(m.id) ? 'done' : ''}">
+      <span class="ico">${S.done.includes(m.id) ? m.ico : '⬛'}</span><b class="px">${m.name}</b><span class="small-note">${m.teaser}</span>
+      ${S.done.includes(m.id) ? `<span class="small-note">✓ ${m.reward} gebaut</span>` : `<button class="primary small" data-mod="${m.id}">Hingehen</button>`}</div>`).join('')}
+    <div class="house ${all ? '' : 'locked'}"><span class="ico">⚔️</span><b class="px">Endboss</b><span class="small-note">Alles gemischt, ohne Hilfe.</span>
+      ${all ? `<button class="primary small" data-mod="X">Kämpfen</button>` : '<span class="small-note">Erst alle drei Orte schaffen.</span>'}</div></div>`;
+}
+
+function render() {
+  let h = hud();
+  if (S.screen === 'start') h += `<div class="block pop">
+    <span class="eyebrow">Deutsch · Lernen, dann kämpfen</span>
+    <h1>Blockdorf in Gefahr</h1>
+    <p>Heute Nacht greift der Schattenritter das Dorf an. Drei Dorfbewohner bringen dir je eine Regel bei. Mit jeder Regel baust du etwas für das Dorf. Am Ende stellst du dich dem Boss. Etwa 15 Minuten.</p>
+    <p class="small-note">Du musst nichts vorher wissen. Erst probierst du, dann bekommst du die Regel erklärt, dann übst du. Wenn du feststeckst, hol dir einen Tipp.</p>
+    <div class="row"><label for="name">Dein Spielername</label></div>
+    <div class="row"><input type="text" id="name" maxlength="20" autocomplete="nickname" value="${esc(S.name)}"></div>
+    <div class="row"><label for="pin">Deine PIN (4 Ziffern)</label></div>
+    <div class="row"><input type="text" id="pin" maxlength="4" inputmode="numeric" pattern="[0-9]*" autocomplete="off" style="max-width:120px"><button class="primary" id="go">Ins Dorf</button></div>
+    <p class="small-note">Beim ersten Mal denkst du dir die PIN selbst aus. Merk sie dir gut. Damit wird dein Ergebnis am Ende automatisch gespeichert.</p>
+    <p id="loginMsg" class="small-note" role="status"></p></div>`;
+  if (S.screen === 'map') h += `<div class="block pop"><span class="eyebrow">Das Dorf</span><h2>Wohin gehst du zuerst?</h2><p>Du entscheidest die Reihenfolge.</p>${S.netNote ? `<p class="small-note">${esc(S.netNote)}</p>` : ''}${villageHtml()}</div>`;
+  if (S.screen === 'step') h += stepHtml();
+  if (S.screen === 'modEnd') { const m = curMod(); const l = S.log.filter(x => x.mod === m.id); h += `<div class="block pop"><span class="eyebrow">${m.name} geschafft</span><div class="tool">${m.ico}</div><h2>${m.reward} gebaut!</h2>
+    <p>Beim ersten Versuch richtig: <b>${l.filter(x => x.ok).length} von ${l.length}</b>.</p>${villageHtml()}</div>`; }
+  if (S.screen === 'end') h += endHtml();
+  app.innerHTML = h;
+  bind();
+  addSpeakers();
+}
+
+function stepHtml() {
+  const m = curMod(), st = m.steps[S.i], boss = m.id === 'X';
+  const total = m.steps.length;
+  let body = '';
+  const head = `<div class="row" style="justify-content:space-between"><span class="eyebrow">${m.name}</span><span class="eyebrow">${S.i + 1} / ${total}</span></div>
+    ${boss ? `<div class="hp" aria-label="Lebenspunkte des Bosses"><i style="width:${Math.round(S.bossHp / total * 100)}%"></i></div>` : ''}`;
+  if (st.t === 'info') return `<div class="block ${boss ? 'end' : ''} pop">${head}${st.html}<div class="row"><button class="primary" id="next">Verstanden, weiter</button></div></div>`;
+
+  if (st.t === 'choice') {
+    S.opts = S.opts || shuffle(st.o);
+    const sent = st.chat ? `<div class="chat"><small>${esc(st.from)}</small>${esc(st.chat)}</div>`
+      : `<div class="sentence">${st.raw ? st.s : fmt(st.s, !!st.help || S.shown, S.shown ? st.a : null)}</div>`;
+    body = `${sent}<h3>${esc(st.q)}</h3>
+      ${st.help && !S.shown ? `<div class="merk">${esc(st.help)}</div>` : ''}
+      <div class="opts">${S.opts.map(o => { let c = ''; if (S.shown) { if (o === st.a) c = 'right'; else if (S.sel.includes(o)) c = 'wrong'; } else if (S.sel.includes(o)) c = 'wrong'; return `<button class="${c}" data-o="${esc(o)}" ${S.shown || S.sel.includes(o) ? 'disabled' : ''}>${esc(o)}</button>`; }).join('')}</div>`;
+  }
+  if (st.t === 'build') {
+    body = `<h3>${esc(st.q)}</h3>
+      <div class="prefix">${esc(st.prefix)} …</div>
+      <div class="tiles slot" aria-label="Dein Satz">${S.placed.length ? S.placed.map((x, i) => `<button class="tile" data-back="${i}" ${S.shown ? 'disabled' : ''}>${esc(x[0])}</button>`).join('') : '<span class="small-note">Klick unten auf die Wörter, um sie hier hinzulegen. Klick hier drauf, um sie zurückzunehmen.</span>'}</div>
+      <div class="tiles">${S.pool.map((x, i) => `<button class="tile" data-put="${i}" ${S.shown ? 'disabled' : ''}>${esc(x[0])}</button>`).join('')}</div>
+      ${!S.shown ? `<div class="row"><button class="primary" id="check" ${S.pool.length ? 'disabled' : ''}>Prüfen</button></div>` : ''}`;
+  }
+  if (st.t === 'multi') {
+    S.opts = S.opts || shuffle(st.pool);
+    body = `<h3>${esc(st.q)}</h3><div class="opts" style="grid-template-columns:repeat(auto-fit,minmax(110px,1fr))">${S.opts.map(o => {
+      let c = S.sel.includes(o) ? 'sel' : '';
+      if (S.shown) c = st.a.includes(o) ? (S.sel.includes(o) || S.solved ? 'right' : 'right') : (S.sel.includes(o) ? 'wrong' : '');
+      return `<button class="small ${c}" data-m="${esc(o)}" ${S.shown ? 'disabled' : ''}>${esc(o)}</button>`; }).join('')}</div>
+      ${!S.shown ? `<div class="row"><button class="primary" id="check">Sammeln</button></div>` : ''}`;
+  }
+  let fb = '';
+  if (S.msg && !S.shown) fb = `<div class="feedback no pop" role="status"><span class="head">Noch nicht</span><p>${S.msg}</p></div>`;
+  if (S.shown) fb = `<div class="feedback ${S.solved ? 'ok' : 'no'} pop" role="status"><span class="head">${S.solved ? (S.tries === 1 ? 'Richtig!' : 'Jetzt stimmt es!') : 'Hier ist die Lösung'}</span><p>${st.explain}</p>
+    <div class="row"><button class="primary" id="next">Weiter</button></div></div>`;
+  const tipBtn = !S.shown && st.tip ? (S.tip ? `<div class="merk pop">💡 ${esc(st.tip)}</div>` : `<div class="row"><button class="small" id="tip">💡 Tipp holen</button></div>`) : '';
+  return `<div class="block ${boss ? 'end' : ''}">${head}${body}${tipBtn}${fb}</div>`;
+}
+
+function verbOk(st, arr) {
+  const vi = arr.findIndex(x => x[1]);
+  return st.rule === 'end' ? vi === arr.length - 1 : vi === 1;
+}
+
+function attempt(ok, chosen) {
+  const m = curMod(), st = m.steps[S.i];
+  S.tries++;
+  if (S.tries === 1) S.log.push({ mod: m.id, step: S.i, ok, chosen, st, tip: S.tip });
+  if (ok) { S.solved = true; S.shown = true; S.msg = ''; if (m.id === 'X' && S.tries === 1) S.bossHp = Math.max(0, S.bossHp - 1); }
+  else if (S.tries >= 2 && st.t !== 'build' || S.tries >= 3) { S.shown = true; S.solved = false; S.msg = ''; }
+  else S.msg = st.wrong || 'Schau noch einmal genau hin. Du kannst dir auch einen Tipp holen.';
+  if (m.id === 'X' && S.shown) { /* Boss verliert nur bei Treffer im ersten Versuch Leben */ }
+  render();
+  const n = document.getElementById('next'); if (n) n.focus();
+}
+
+function enterStep() {
+  stopSpeak();
+  const st = curMod().steps[S.i];
+  S.tries = 0; S.shown = false; S.solved = false; S.tip = false; S.sel = []; S.msg = ''; S.opts = null;
+  if (st.t === 'build') {
+    S.placed = [];
+    let p; do { p = shuffle(st.tiles); } while (verbOk(st, p));
+    S.pool = p;
+  }
+  render(); window.scrollTo({ top: 0 });
+}
+
+function next() {
+  stopSpeak();
+  const m = curMod();
+  S.i++;
+  if (S.i >= m.steps.length) {
+    if (m.id === 'X') { S.screen = 'end'; render(); sendResult('Blockdorf Teil 1: In Gefahr', S.log.filter(x => x.ok).length, S.log.length, report()); return; }
+    S.done.push(m.id); S.screen = 'modEnd'; render(); window.scrollTo({ top: 0 }); return;
+  }
+  enterStep();
+}
+
+function report() {
+  const L = ['BLOCKDORF-ERGEBNIS (Lernen + Boss)', `Spieler: ${S.name || 'unbekannt'} | Datum: ${new Date().toLocaleDateString('de-DE')} | Dauer: ${S.start ? Math.round((Date.now() - S.start) / 60000) : '?'} Min. | Tipps: ${S.tips}x`, ''];
+  [...MODULE, BOSS].forEach(m => { const l = S.log.filter(x => x.mod === m.id); if (l.length) L.push(`- ${m.name}: ${l.filter(x => x.ok).length}/${l.length} beim ersten Versuch`); });
+  const wrong = S.log.filter(x => !x.ok);
+  L.push('', wrong.length ? 'Fehler (erster Versuch):' : 'Keine Fehler.');
+  wrong.forEach(x => {
+    const st = x.st, what = st.chat || st.prefix || (st.s || st.q).replace(/\[\/?[vn]\]/g, '').replace(/<br>/g, ' / ');
+    const right = st.t === 'build' ? (st.rule === 'end' ? 'Verb ans Ende' : 'Verb an 2. Stelle') : Array.isArray(st.a) ? st.a.join(', ') : st.a;
+    L.push(`- ${x.mod === 'X' ? 'Boss' : x.mod}${x.step + 1}: "${what}" | gewählt: ${Array.isArray(x.chosen) ? x.chosen.join(', ') : x.chosen} | richtig: ${right}${x.tip ? ' | mit Tipp' : ''}`);
+  });
+  return L.join('\n');
+}
+
+function endHtml() {
+  const l = S.log.filter(x => x.mod === 'X');
+  return `<div class="block end pop"><span class="eyebrow">Das Dorf ist gerettet</span><div class="tool">🏆</div>
+    <h1>Der Schattenritter ist besiegt!</h1>
+    <p>Gegen den Boss beim ersten Versuch richtig: <b>${l.filter(x => x.ok).length} von ${l.length}</b>. Insgesamt ${S.log.filter(x => x.ok).length} von ${S.log.length}.</p>
+    <div class="merk"><b>Das hast du heute gelernt:</b><span>„weil“ schiebt das Verb ans Ende, „denn“ lässt es an 2. Stelle.</span><span>damit = Ziel (Wozu?), sodass = Folge (Mit welcher Folge?).</span><span>als, wenn, nachdem, während, bis, bevor, sobald = Temporalsatz (Wann?).</span></div>
+    <h3>Ergebnis für die Auswertung</h3><p class="small-note">Kopieren und in den Chat mit Claude einfügen.</p>
+    <textarea id="report" readonly>${esc(report())}</textarea>
+    <div class="row"><button class="primary" id="copy">Ergebnis kopieren</button><span id="copied" class="small-note" role="status"></span></div><p id="sendMsg" class="small-note" role="status">${NET.online ? (NET.sent === 'ok' ? '✓ Dein Ergebnis wurde automatisch gespeichert. Du musst nichts mehr schicken.' : 'Ergebnis wird gespeichert …') : 'Bitte kopieren und schicken.'}</p><div class="row"><button id="restart">Neu starten</button></div></div>`;
+}
+
+function bind() {
+  const $ = id => document.getElementById(id);
+  if ($('go')) { const go = () => login(() => { S.screen = 'map'; render(); }); $('go').onclick = go; $('pin').onkeydown = e => { if (e.key === 'Enter') go(); }; $('name').onkeydown = e => { if (e.key === 'Enter') $('pin').focus(); }; }
+  app.querySelectorAll('[data-mod]').forEach(b => b.onclick = () => { S.mod = b.dataset.mod; S.i = 0; if (S.mod === 'X') S.bossHp = BOSS.steps.length; S.screen = 'step'; enterStep(); });
+  if ($('next')) $('next').onclick = next;
+  if ($('tip')) $('tip').onclick = () => { S.tip = true; S.tips++; render(); };
+  app.querySelectorAll('[data-o]').forEach(b => b.onclick = () => { const st = curMod().steps[S.i], o = b.dataset.o; S.sel.push(o); attempt(o === st.a, o); });
+  app.querySelectorAll('[data-put]').forEach(b => b.onclick = () => { S.placed.push(S.pool.splice(+b.dataset.put, 1)[0]); S.msg = ''; render(); });
+  app.querySelectorAll('[data-back]').forEach(b => b.onclick = () => { S.pool.push(S.placed.splice(+b.dataset.back, 1)[0]); render(); });
+  app.querySelectorAll('[data-m]').forEach(b => b.onclick = () => { const o = b.dataset.m; S.sel = S.sel.includes(o) ? S.sel.filter(x => x !== o) : [...S.sel, o]; S.msg = ''; render(); });
+  if ($('check')) $('check').onclick = () => {
+    const st = curMod().steps[S.i];
+    if (st.t === 'build') {
+      const ok = verbOk(st, S.placed), chosen = S.placed.map(x => x[0]).join(' ');
+      if (!ok && S.tries < 2) { const p = S.placed; S.placed = []; S.pool = p; }
+      if (!ok && S.tries >= 2) S.placed = st.rule === 'end' ? [...S.placed.filter(x => !x[1]), S.placed.find(x => x[1])] : (() => { const r = S.placed.filter(x => !x[1]); return [r[0], S.placed.find(x => x[1]), ...r.slice(1)]; })();
+      attempt(ok, chosen);
+    } else {
+      const ok = S.sel.length === st.a.length && st.a.every(a => S.sel.includes(a));
+      attempt(ok, S.sel.slice());
+      if (!ok && !S.shown) { S.sel = []; render(); }
+    }
+  };
+  if ($('copy')) $('copy').onclick = () => {
+    const ta = $('report'), done = m => { $('copied').textContent = m; };
+    try { navigator.clipboard.writeText(ta.value).then(() => done('Kopiert.'), () => { ta.select(); done('Text ist markiert. Jetzt Strg+C drücken.'); }); }
+    catch (e) { ta.select(); done('Text ist markiert. Jetzt Strg+C drücken.'); }
+  };
+  if ($('restart')) $('restart').onclick = () => { const n = S.name; S = fresh(); S.name = n; render(); };
+}
+render();
+</script>
+
+</body>
+</html>

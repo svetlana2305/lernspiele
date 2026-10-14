@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>*{box-sizing:border-box}body{margin:0}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Blockdorf: Die große Baustelle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout: eine Spielspalte (max 720px), oben HUD-Leiste, darunter wechselnde Szenen; Blockwelt bei Nacht, Gras/Erde-Kanten, Diamant als einziger Akzent */
+:root {
+  --sky: #10171f;
+  --panel: #1b2630;
+  --panel-2: #24323e;
+  --line: #3a4b58;
+  --fg: #eef3ec;
+  --muted: #a7b6ad;
+  --grass: #5fae3a;
+  --grass-dark: #3f7d24;
+  --dirt: #7a5133;
+  --dirt-dark: #573922;
+  --diamond: #4fe0d6;
+  --good: #7bdc5a;
+  --bad: #ff6b5e;
+  --gold: #f5c542;
+  --mark: rgba(79, 224, 214, .22);
+  --display: "Pixelify Sans", "Courier New", monospace;
+  --body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  background: var(--sky);
+  background-image:
+    radial-gradient(2px 2px at 12% 18%, #ffffff55 50%, transparent 51%),
+    radial-gradient(2px 2px at 72% 9%, #ffffff44 50%, transparent 51%),
+    radial-gradient(2px 2px at 88% 31%, #ffffff33 50%, transparent 51%),
+    radial-gradient(2px 2px at 35% 6%, #ffffff33 50%, transparent 51%);
+  color: var(--fg);
+  font-family: var(--body);
+  font-size: 1.05rem;
+  line-height: 1.55;
+  padding-inline: 16px;
+  padding-block: 16px 48px;
+}
+.wrap { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+h1, h2, h3, .px { font-family: var(--display); font-weight: 700; letter-spacing: .02em; text-wrap: balance; }
+h1 { font-size: clamp(1.9rem, 6vw, 2.8rem); line-height: 1.05; margin: 0; }
+h2 { font-size: 1.6rem; margin: 0; line-height: 1.15; }
+h3 { font-size: 1.15rem; margin: 0; }
+p { margin: 0; }
+
+/* HUD */
+.hud {
+  display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; justify-content: space-between;
+  font-family: var(--display); font-size: 1.05rem;
+  background: var(--panel); border: 3px solid var(--line); padding: 8px 12px;
+}
+.hud .stat { display: flex; gap: 6px; align-items: center; font-variant-numeric: tabular-nums; }
+.gem { width: 14px; height: 14px; background: var(--diamond); transform: rotate(45deg); box-shadow: inset -3px -3px 0 #1fa79e; display: inline-block; }
+.heart { color: var(--bad); letter-spacing: 2px; }
+.heart .off { color: var(--line); }
+.bookbtn { margin-left: auto; }
+
+/* Grass block panel */
+.block {
+  background: var(--panel);
+  border: 3px solid #0b1015;
+  box-shadow: inset 0 10px 0 var(--grass), inset 0 14px 0 var(--grass-dark);
+  padding: 30px 20px 22px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.block.stone { box-shadow: inset 0 10px 0 #7d8a92, inset 0 14px 0 #5a666d; }
+.block.nether { box-shadow: inset 0 10px 0 #c2412f, inset 0 14px 0 #7d241a; }
+.block.end { box-shadow: inset 0 10px 0 #d9d48a, inset 0 14px 0 #8f8a4c; }
+.eyebrow { font-family: var(--display); font-size: .9rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+
+.sentence {
+  font-size: 1.3rem; line-height: 1.6; background: var(--panel-2); padding: 14px 16px; border: 2px solid var(--line);
+}
+.sentence mark { background: var(--mark); color: var(--diamond); padding: 0 3px; font-weight: 700; }
+.sentence .ns { border-bottom: 3px solid var(--diamond); }
+.sentence .gap { display: inline-block; min-width: 4.5em; border-bottom: 3px dashed var(--gold); text-align: center; color: var(--gold); font-weight: 700; }
+
+.opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+button, .btn {
+  font: inherit; font-family: var(--display); font-weight: 500; font-size: 1.05rem;
+  color: var(--fg); background: #4a5560; border: 3px solid #0b1015;
+  box-shadow: inset -4px -4px 0 #343d45, inset 4px 4px 0 #6d7984;
+  padding: 10px 14px; cursor: pointer; text-align: center; min-height: 48px;
+}
+button:hover:not(:disabled) { background: #56636f; }
+button:focus-visible { outline: 3px solid var(--diamond); outline-offset: 2px; }
+button:disabled { cursor: default; opacity: .9; }
+button.primary { background: var(--grass-dark); box-shadow: inset -4px -4px 0 #2c5a19, inset 4px 4px 0 #6fbb48; }
+button.primary:hover:not(:disabled) { background: #4a8f2b; }
+button.small { font-size: .9rem; min-height: 38px; padding: 6px 10px; }
+button.right { background: #2f6d22; box-shadow: inset -4px -4px 0 #1f4a16, inset 4px 4px 0 var(--good); }
+button.wrong { background: #7a2a22; box-shadow: inset -4px -4px 0 #4f1a15, inset 4px 4px 0 var(--bad); }
+button .sub { display: block; font-family: var(--body); font-size: .8rem; color: var(--muted); font-weight: 400; }
+
+.feedback { border: 3px solid var(--line); padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; background: var(--panel-2); }
+.feedback.ok { border-color: var(--good); }
+.feedback.no { border-color: var(--bad); }
+.feedback .head { font-family: var(--display); font-size: 1.2rem; }
+.feedback.ok .head { color: var(--good); }
+.feedback.no .head { color: var(--bad); }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+/* Map */
+.map { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.world { border: 3px solid #0b1015; padding: 12px; display: flex; flex-direction: column; gap: 4px; min-height: 108px; background: var(--panel-2); }
+.world .n { font-family: var(--display); font-size: 1.1rem; }
+.world .d { font-size: .88rem; color: var(--muted); }
+.world.done { outline: 3px solid var(--good); }
+.world.now { outline: 3px solid var(--diamond); }
+.w1 { box-shadow: inset 0 6px 0 var(--grass); }
+.w2 { box-shadow: inset 0 6px 0 #7d8a92; }
+.w3 { box-shadow: inset 0 6px 0 #c2412f; }
+.w4 { box-shadow: inset 0 6px 0 #d9d48a; }
+
+.progress { display: flex; gap: 3px; flex-wrap: wrap; }
+.progress span { width: 16px; height: 16px; background: var(--dirt-dark); border: 2px solid #0b1015; }
+.progress span.ok { background: var(--good); }
+.progress span.no { background: var(--bad); }
+.progress span.cur { background: var(--diamond); }
+
+label { font-family: var(--display); }
+input[type=text] { font: inherit; font-size: 1.1rem; padding: 10px 12px; background: var(--panel-2); color: var(--fg); border: 3px solid var(--line); width: 100%; max-width: 320px; }
+input[type=text]:focus-visible { outline: 3px solid var(--diamond); }
+
+.tool { font-size: 3rem; line-height: 1; }
+.chest { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.chest .slot { background: var(--panel-2); border: 3px solid #0b1015; padding: 10px; display: flex; flex-direction: column; gap: 2px; }
+.chest .slot b { font-family: var(--display); font-weight: 500; }
+.bar { height: 10px; background: var(--dirt-dark); border: 2px solid #0b1015; }
+.bar i { display: block; height: 100%; background: var(--good); }
+.bar i.mid { background: var(--gold); }
+.bar i.low { background: var(--bad); }
+
+textarea { width: 100%; min-height: 220px; font-family: ui-monospace, Consolas, monospace; font-size: .85rem; background: #0b1015; color: var(--fg); border: 3px solid var(--line); padding: 10px; }
+
+/* Rezeptbuch */
+.book { position: fixed; inset: 0; background: rgba(5, 8, 11, .82); display: flex; align-items: flex-start; justify-content: center; padding: calc(16px + env(safe-area-inset-top, 0px)) 16px 16px; overflow-y: auto; z-index: 10; }
+.book .page { background: #e9dcc0; color: #2b2116; border: 4px solid #5b4127; max-width: 760px; width: 100%; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.book h2 { color: #2b2116; }
+.tablewrap { overflow-x: auto; }
+.book table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: .95rem; }
+.book th, .book td { border: 2px solid #8b6d48; padding: 6px 8px; text-align: left; vertical-align: top; }
+.book th { font-family: var(--display); background: #d8c49d; }
+.book td:first-child { font-weight: 700; color: #8a2a52; }
+.book button { color: var(--fg); }
+
+.small-note { font-size: .9rem; color: var(--muted); }
+@media (prefers-reduced-motion: no-preference) {
+  .pop { animation: pop .25s ease-out; }
+  @keyframes pop { from { transform: scale(.96); opacity: .4; } to { transform: none; opacity: 1; } }
+}
+</style>
+<style>
+.tiles { display: flex; flex-wrap: wrap; gap: 8px; min-height: 52px; align-items: center; }
+.tiles.slot { background: var(--panel-2); border: 2px dashed var(--line); padding: 8px; }
+.tile { font-family: var(--body); font-weight: 700; font-size: 1.1rem; background: var(--dirt); box-shadow: inset -4px -4px 0 var(--dirt-dark), inset 4px 4px 0 #9a6a45; min-height: 44px; }
+.tile:hover:not(:disabled) { background: #8a5d3b; }
+.verb { border-bottom: 3px solid var(--gold); color: var(--gold); font-weight: 700; }
+.sentence .nsx { border-bottom: 3px solid var(--diamond); }
+.merk { border-left: 6px solid var(--gold); padding: 10px 14px; background: var(--panel-2); display: flex; flex-direction: column; gap: 6px; }
+.rule { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.rule > div { background: var(--panel-2); border: 2px solid var(--line); padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.rule b.h { font-family: var(--display); font-size: 1.1rem; color: var(--diamond); font-weight: 500; }
+.tbl { overflow-x: auto; }
+.tbl table { border-collapse: collapse; width: 100%; min-width: 420px; }
+.tbl th, .tbl td { border: 2px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+.tbl th { font-family: var(--display); font-weight: 500; background: var(--panel-2); }
+.village { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.house { border: 3px solid #0b1015; background: var(--panel-2); padding: 12px; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+.house .ico { font-size: 2rem; line-height: 1; }
+.house.done { outline: 3px solid var(--good); }
+.house.locked { opacity: .55; }
+.npc { display: flex; gap: 12px; align-items: flex-start; }
+.npc .face { font-size: 2.2rem; line-height: 1; flex: none; }
+.npc .say { background: var(--panel-2); border: 2px solid var(--line); padding: 10px 12px; min-width: 0; }
+.hp { height: 14px; background: var(--dirt-dark); border: 2px solid #0b1015; }
+.hp i { display: block; height: 100%; background: var(--bad); transition: width .3s; }
+.chat { background: #0b1015; border: 2px solid var(--line); padding: 10px 12px; font-size: 1.15rem; }
+.chat small { color: var(--muted); display: block; font-size: .85rem; }
+.words { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; font-size: 1.25rem; background: var(--panel-2); border: 2px solid var(--line); padding: 12px; }
+.words .w { padding: 2px 4px; }
+.cut { min-height: 40px; min-width: 22px; padding: 0 4px; font-size: 1.2rem; background: transparent; box-shadow: none; border: 2px dashed var(--line); color: var(--muted); }
+.cut.on { background: var(--gold); color: #1b1300; border-color: var(--gold); }
+.cut.on.bad { background: var(--bad); border-color: var(--bad); }
+.cut.miss { border-color: var(--good); color: var(--good); }
+.wbtn { font-family: var(--body); font-weight: 700; font-size: 1.15rem; min-height: 42px; padding: 4px 10px; }
+.wbtn.sel { background: #2b5d73; box-shadow: inset -4px -4px 0 #1b3f4f, inset 4px 4px 0 var(--diamond); }
+textarea.answer { width: 100%; min-height: 90px; font-family: var(--body); font-size: 1.15rem; background: var(--panel-2); color: var(--fg); border: 3px solid var(--line); padding: 10px; }
+textarea.answer:focus-visible { outline: 3px solid var(--diamond); }
+.check li { margin-bottom: 4px; }
+.say-btn { align-self: flex-start; font-size: .85rem; min-height: 36px; padding: 4px 10px; }
+.npc .say { display: flex; flex-direction: column; gap: 8px; }
+</style>
+
+<div class="wrap" id="app"></div>
+
+<script>
+const shuffle = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+function fmt(s, gapFill) {
+  let h = esc(s);
+  h = h.replace(/\[n\](.*?)\[\/n\]/g, '<span class="nsx">$1</span>');
+  h = h.replace('___', `<span class="gap">${gapFill ? esc(gapFill) : '?'}</span>`);
+  return h;
+}
+const plain = s => s.replace(/\[\/?n\]/g, '');
+const joinTiles = arr => arr.join(' ').replace(/ ,/g, ',');
+const NAMES = ['Temporalsatz', 'Kausalsatz', 'Finalsatz', 'Konzessivsatz', 'Konsekutivsatz', 'Konditionalsatz', 'Modalsatz'];
+const GLIEDER = ['Subjekt', 'Akkusativobjekt', 'Dativobjekt', 'Genitivobjekt'];
+
+const MODULE = [
+  {
+    id: 'D', name: 'Umbau-Werkstatt', ico: '🏗️', reward: 'Brücke', teaser: 'Adverbiale Bestimmung ↔ Adverbialsatz',
+    steps: [
+      { t: 'info', html: `<div class="npc"><span class="face">👷</span><div class="say">Willkommen zurück! Nach dem Kampf bauen wir das Dorf neu. In meiner Werkstatt lernst du, wie man <b>dasselbe auf zwei Arten</b> sagt: kurz oder lang. Schau dir zuerst zwei Sätze an.</div></div>` },
+      { t: 'choice', raw: 'A: Wegen des Regens fiel das Spiel aus.<br>B: Weil es regnete, fiel das Spiel aus.', q: 'Welcher Satz hat zwei Verben?', o: ['Satz A', 'Satz B'], a: 'Satz B', tip: 'Such in jedem Satz die Wörter, die ein Tun beschreiben.', explain: 'In B hat der Nebensatz ein eigenes Verb: <b>regnete</b>. A sagt dasselbe kurz mit „wegen des Regens“, ohne eigenes Verb. So ein Satzteil heißt <b>adverbiale Bestimmung</b>.' },
+      { t: 'info', html: `<h3>Die Regel</h3>
+        <div class="rule">
+          <div><b class="h">Adverbiale Bestimmung</b><span><b>Wegen des Regens</b> fiel das Spiel aus.</span><span>Präposition + Nomen</span><span><b>kein</b> eigenes Verb, <b>kein</b> Komma</span></div>
+          <div><b class="h">Adverbialsatz</b><span><b>Weil es regnete,</b> fiel das Spiel aus.</span><span>Konjunktion + … + Verb am Ende</span><span>eigenes Verb, <b>mit</b> Komma</span></div>
+        </div>
+        <div class="tbl"><table><thead><tr><th>Adverbiale Bestimmung</th><th>Adverbialsatz</th><th>Art</th></tr></thead><tbody>
+          <tr><td>wegen, aufgrund</td><td>weil, da</td><td>Kausalsatz</td></tr>
+          <tr><td>trotz</td><td>obwohl</td><td>Konzessivsatz</td></tr>
+          <tr><td>nach, vor, während, bei</td><td>nachdem, bevor, während, als/wenn</td><td>Temporalsatz</td></tr>
+          <tr><td>bei, im Falle</td><td>wenn, falls</td><td>Konditionalsatz</td></tr>
+          <tr><td>zum, zur, für</td><td>damit, um … zu</td><td>Finalsatz</td></tr>
+          <tr><td>durch, mittels</td><td>indem</td><td>Modalsatz</td></tr>
+        </tbody></table></div>
+        <div class="merk"><b>Trick: Aus dem Nomen wird ein Verb.</b><span>der Regen → es regnete · die Erkältung → er war erkältet · die Ankunft → als er ankam</span></div>` },
+      { t: 'choice', s: '[n]Trotz der Kälte[/n] gingen wir schwimmen.', q: 'Welche Konjunktion brauchst du für den Nebensatz?', o: ['obwohl', 'weil', 'damit', 'nachdem'], a: 'obwohl', help: 'Hilfe: Schau in die Tabelle oben. „trotz“ wird zu …', explain: 'trotz → <b>obwohl</b>: Obwohl es kalt war, gingen wir schwimmen.' },
+      { t: 'choice', s: '[n]Nach dem Training[/n] aßen wir Pizza.', q: 'Welche Konjunktion brauchst du jetzt? Ohne Hilfe.', o: ['nachdem', 'obwohl', 'indem', 'falls'], a: 'nachdem', tip: '„nach“ ist eine Zeitangabe.', explain: 'nach → <b>nachdem</b>: Nachdem wir trainiert hatten, aßen wir Pizza.' },
+      { t: 'build', base: 'Aufgrund seiner Erkältung blieb Ben zu Hause.', q: 'Bau daraus einen Satz mit Nebensatz. Achte auf Komma und Verb am Ende.', tiles: ['Weil', 'Ben', 'erkältet', 'war', ',', 'blieb', 'er', 'zu Hause'],
+        sol: [['Weil', 'Ben', 'erkältet', 'war', ',', 'blieb', 'er', 'zu Hause'], ['Weil', 'er', 'erkältet', 'war', ',', 'blieb', 'Ben', 'zu Hause']],
+        wrong: 'Fang mit der Konjunktion an. Das Verb des Nebensatzes kommt vor das Komma. Nach dem Komma steht gleich das nächste Verb.', tip: 'Weil Ben erkältet … ? Welches Wort fehlt dann noch vor dem Komma?', explain: '<b>Weil Ben erkältet war, blieb er zu Hause.</b> (Kausalsatz)' },
+      { t: 'build', base: 'Zur Verbesserung seiner Note lernt Tim jeden Tag.', q: 'Jetzt ein Finalsatz. Bau ihn zusammen.', tiles: ['Damit', 'Tim', 'seine Note', 'verbessert', ',', 'lernt', 'er', 'jeden Tag'],
+        sol: [['Damit', 'Tim', 'seine Note', 'verbessert', ',', 'lernt', 'er', 'jeden Tag'], ['Damit', 'er', 'seine Note', 'verbessert', ',', 'lernt', 'Tim', 'jeden Tag']],
+        wrong: 'Denk an die Reihenfolge: Konjunktion … Verb, Komma, Verb …', tip: 'Das Verb „verbessert“ steht im Nebensatz ganz hinten, direkt vor dem Komma.', explain: '<b>Damit Tim seine Note verbessert, lernt er jeden Tag.</b> (Finalsatz)' },
+      { t: 'info', html: `<div class="npc"><span class="face">👷</span><div class="say">Jetzt bauen wir <b>rückwärts</b>: Aus dem Nebensatz wird eine kurze adverbiale Bestimmung.</div></div>
+        <div class="merk"><b>Trick: Aus dem Verb wird ein Nomen.</b><span>regnen → der Regen · ankommen → die Ankunft · Angst haben → die Angst · eine Panne haben → die Panne</span>
+        <span><b>Achtung beim Artikel:</b> nach „wegen“ und „trotz“ kommt der Genitiv. <b>die</b> Panne → wegen <b>der</b> Panne. <b>der</b> Regen → wegen <b>des</b> Regens.</span>
+        <span><b>Kein Komma</b> nach der adverbialen Bestimmung, und es bleibt nur <b>ein</b> Verb im ganzen Satz.</span></div>` },
+      { t: 'choice', s: 'Weil der Bus eine Panne hatte, kamen wir zu spät.', q: 'Welche Umformung ist richtig?', o: ['Wegen der Panne des Busses kamen wir zu spät.', 'Wegen des Buspanne kamen wir zu spät.', 'Obwohl der Panne kamen wir zu spät.'], a: 'Wegen der Panne des Busses kamen wir zu spät.', tip: 'Es heißt „die Panne“. Was wird daraus nach „wegen“?', explain: 'die Panne → wegen <b>der</b> Panne des Busses. „des Buspanne“ geht nicht, weil Panne weiblich ist.' },
+      { t: 'choice', s: 'Obwohl sie Angst hatte, betrat Mia die Höhle.', q: 'Welche Umformung ist richtig?', o: ['Trotz ihrer Angst betrat Mia die Höhle.', 'Wegen ihrer Angst betrat Mia die Höhle.', 'Trotz ihrer Angst, betrat Mia die Höhle.'], a: 'Trotz ihrer Angst betrat Mia die Höhle.', tip: 'Zwei Fallen: die Präposition und das Komma.', explain: 'obwohl → <b>trotz</b>. Und nach einer adverbialen Bestimmung steht <b>kein Komma</b>.' },
+      { t: 'choice', s: 'Während der Lehrer erklärte, schrieben wir mit.', q: 'Welche Umformung ist richtig?', o: ['Während der Erklärung des Lehrers schrieben wir mit.', 'Nach der Erklärung des Lehrers schrieben wir mit.', 'Während der Lehrer erklärte schrieben wir mit.'], a: 'Während der Erklärung des Lehrers schrieben wir mit.', tip: 'Die Aussage muss gleich bleiben. Schreiben sie währenddessen oder danach mit?', explain: '<b>Während der Erklärung des Lehrers</b> schrieben wir mit. Die Bedeutung bleibt gleich. Satz 3 ist noch ein Nebensatz, nur ohne Komma.' },
+      { t: 'write', s: 'Nachdem das Spiel zu Ende war, gingen alle nach Hause.', q: 'Schreib selbst: Forme den Nebensatz in eine adverbiale Bestimmung um.', model: 'Nach dem Ende des Spiels gingen alle nach Hause.', check: ['„nachdem“ wurde zu „nach“.', 'Aus „zu Ende sein“ wurde ein Nomen: das Ende.', 'Kein Komma mehr und nur noch ein Verb (gingen).'] },
+      { t: 'write', s: 'Trotz des Lärms schlief das Baby weiter.', q: 'Schreib selbst: Forme die adverbiale Bestimmung in einen Nebensatz um. Schreib die Art in Klammern dahinter.', model: 'Obwohl es laut war, schlief das Baby weiter. (Konzessivsatz)', check: ['Konjunktion „obwohl“.', 'Das Verb steht am Ende des Nebensatzes (war).', 'Komma nach dem Nebensatz.', 'Art in Klammern: (Konzessivsatz).'] },
+    ]
+  },
+  {
+    id: 'E', name: 'Satzglied-Labor', ico: '🧪', reward: 'Labor', teaser: 'Umstellprobe, Prädikat, Objekte',
+    steps: [
+      { t: 'info', html: `<div class="npc"><span class="face">🧪</span><div class="say">Ich bin die Alchemistin. Jeder Satz besteht aus Bausteinen, den <b>Satzgliedern</b>. Ich zeig dir einen Zaubertrick: Man kann die Bausteine im Satz verschieben.</div></div>` },
+      { t: 'choice', raw: 'Der Ritter gibt dem König das Schwert.<br>Dem König gibt der Ritter das Schwert.<br>Das Schwert gibt der Ritter dem König.', q: 'Welche Wörter bleiben beim Umstellen immer zusammen?', o: ['„dem König“', '„Ritter gibt“', '„König das“'], a: '„dem König“', tip: 'Schau, welche Wörter in allen drei Sätzen direkt nebeneinander stehen.', explain: 'Genau. <b>der Ritter | gibt | dem König | das Schwert</b> sind 4 Satzglieder. Was beim Umstellen zusammenbleibt, ist ein Satzglied. Das ist die <b>Umstellprobe</b>.' },
+      { t: 'split', s: 'Der Ritter gibt dem König das Schwert.', cuts: [1, 2, 4], q: 'Setz Striche zwischen die Satzglieder. Klick dafür auf die Lücken zwischen den Wörtern.', help: 'Hilfe: Es sind 4 Satzglieder, also 3 Striche.', explain: '<b>Der Ritter | gibt | dem König | das Schwert.</b>' },
+      { t: 'info', html: `<h3>Die Satzglieder</h3>
+        <div class="tbl"><table><thead><tr><th>Satzglied</th><th>Frage</th><th>Beispiel</th></tr></thead><tbody>
+          <tr><td><b>Prädikat</b></td><td>Was tut jemand? Was geschieht?</td><td>Der Ritter <b>gibt</b> …</td></tr>
+          <tr><td><b>Subjekt</b></td><td>Wer oder was?</td><td><b>Der Ritter</b> gibt …</td></tr>
+          <tr><td><b>Akkusativobjekt</b></td><td>Wen oder was?</td><td>… gibt <b>das Schwert</b>.</td></tr>
+          <tr><td><b>Dativobjekt</b></td><td>Wem?</td><td>… gibt <b>dem König</b> …</td></tr>
+          <tr><td><b>Genitivobjekt</b></td><td>Wessen?</td><td>Er gedachte <b>seines Vaters</b>.</td></tr>
+          <tr><td><b>Adverbiale Bestimmung</b></td><td>Wann? Wo? Warum? Wie?</td><td><b>Am Morgen</b> ritt er los.</td></tr>
+        </tbody></table></div>
+        <div class="merk"><b>Prädikat:</b> das Verb in der Personalform, im Hauptsatz an <b>2. Stelle</b>. Es kann <b>mehrteilig</b> sein, dann bildet es eine Klammer:<span>Der Zug <b>kommt</b> heute pünktlich <b>an</b>. · Arthur <b>hat</b> das Schwert <b>geholt</b>.</span>
+        <b>Trick:</b><span>Frag immer mit dem Prädikat: <i>Wem</i> gibt der Ritter das Schwert? → dem König → Dativobjekt.</span></div>` },
+      { t: 'mark', s: 'Der Zug kommt heute pünktlich an.', sol: [2, 5], q: 'Klick alle Teile des Prädikats an.', help: 'Hilfe: Das Prädikat hat hier zwei Teile. Einer steht ganz hinten.', explain: '<b>kommt … an</b> (ankommen). Das ist eine Prädikatsklammer.' },
+      { t: 'mark', s: 'Arthur hat das Schwert aus dem See geholt.', sol: [1, 7], q: 'Klick alle Teile des Prädikats an. Jetzt ohne Hilfe.', tip: 'Welches Verb steht an 2. Stelle? Gibt es ganz hinten noch einen Teil?', explain: '<b>hat … geholt</b>.' },
+      { t: 'split', s: 'Am Morgen las Mia ihrer Schwester eine Geschichte vor.', cuts: [1, 2, 3, 5, 7], q: 'Setz die Striche zwischen die Satzglieder.', tip: 'Stell um: „Mia las ihrer Schwester am Morgen eine Geschichte vor.“ Was bleibt zusammen?', explain: '<b>Am Morgen | las | Mia | ihrer Schwester | eine Geschichte | vor.</b> „las … vor“ ist das Prädikat, „vor“ steht allein am Ende.' },
+      { t: 'choice', s: '[n]Der Fee[/n] dankte Arthur.', q: 'Mit welcher Frage findest du das unterstrichene Satzglied?', o: ['Wer?', 'Wem?', 'Wen?', 'Wessen?'], a: 'Wem?', tip: 'Frag mit dem Prädikat: … dankte Arthur?', explain: '<b>Wem</b> dankte Arthur? Der Fee.' },
+      { t: 'choice', s: '[n]Der Fee[/n] dankte Arthur.', q: 'Welches Satzglied ist es also?', o: GLIEDER, a: 'Dativobjekt', tip: 'Wem? gehört zu einem Objekt.', explain: '<b>Dativobjekt</b>. Achtung: Hier steht am Anfang nicht das Subjekt. Wer dankte? Arthur, das ist das Subjekt.' },
+      { t: 'choice', s: '[n]Den Drachen[/n] besiegte der junge Ritter.', q: 'Welches Satzglied ist unterstrichen?', o: GLIEDER, a: 'Akkusativobjekt', tip: 'Wen besiegte der Ritter?', explain: '<b>Wen</b> besiegte der Ritter? Den Drachen → <b>Akkusativobjekt</b>.' },
+      { t: 'choice', s: 'Der Richter beschuldigte den Dieb [n]des Diebstahls[/n].', q: 'Welches Satzglied ist unterstrichen?', o: GLIEDER, a: 'Genitivobjekt', tip: 'Wessen beschuldigte er den Dieb?', explain: '<b>Wessen</b> beschuldigte er ihn? Des Diebstahls → <b>Genitivobjekt</b>. Das kommt selten vor, meist bei Verben wie beschuldigen, gedenken, sich erinnern.' },
+      { t: 'choice', s: 'Am Abend gab [n]der König[/n] ein Fest.', q: 'Welches Satzglied ist unterstrichen?', o: GLIEDER, a: 'Subjekt', tip: 'Wer gab ein Fest?', explain: '<b>Wer</b> gab ein Fest? Der König → <b>Subjekt</b>.' },
+    ]
+  },
+  {
+    id: 'F', name: 'Rätsel-Turm', ico: '🦉', reward: 'Turmspitze', teaser: 'Verkleidete Konjunktionen',
+    steps: [
+      { t: 'info', html: `<div class="npc"><span class="face">🦉</span><div class="say">Ich bin die Eule. In Klassenarbeiten tauchen manchmal <b>verkleidete</b> Konjunktionen auf. Sie sehen anders aus, bedeuten aber dasselbe wie die, die du schon kennst.</div></div>
+        <div class="tbl"><table><thead><tr><th>Verkleidung</th><th>bedeutet wie</th><th>Art</th></tr></thead><tbody>
+          <tr><td><b>auch wenn</b></td><td>obwohl</td><td>Konzessivsatz</td></tr>
+          <tr><td><b>um … zu</b></td><td>damit (ohne eigenes Subjekt)</td><td>Finalsatz</td></tr>
+          <tr><td><b>da</b></td><td>weil</td><td>Kausalsatz</td></tr>
+          <tr><td><b>wenn … sollte</b></td><td>falls</td><td>Konditionalsatz</td></tr>
+        </tbody></table></div>
+        <div class="merk"><b>Beispiele:</b><span>Ich gehe raus, <b>auch wenn</b> es regnet. (Konzessivsatz)</span><span><b>Um</b> fit <b>zu</b> werden, trainiert sie. (Finalsatz: Wozu trainiert sie?)</span><span><b>Wenn</b> ich gewinnen <b>sollte</b>, springe ich vor Freude. (Konditionalsatz)</span></div>` },
+      { t: 'choice', s: 'Ich gehe zum Training, [n]auch wenn ich müde bin[/n].', q: 'Welche Satzart ist der unterstrichene Nebensatz?', o: NAMES, a: 'Konzessivsatz', help: 'Hilfe: auch wenn = obwohl', explain: 'auch wenn = obwohl → <b>Konzessivsatz</b>.' },
+      { t: 'choice', s: '[n]Um Geld zu sparen[/n], fährt er mit dem Rad.', q: 'Welche Satzart?', o: NAMES, a: 'Finalsatz', tip: 'Wozu fährt er mit dem Rad?', explain: 'Wozu? Um Geld zu sparen → <b>Finalsatz</b>.' },
+      { t: 'choice', s: 'Ich trage eine Mütze, [n]da es kalt ist[/n].', q: 'Welche Satzart?', o: NAMES, a: 'Kausalsatz', tip: 'da = ?', explain: 'da = weil → <b>Kausalsatz</b>.' },
+      { t: 'choice', s: '[n]Wenn du mir helfen solltest[/n], sind wir schneller fertig.', q: 'Welche Satzart?', o: NAMES, a: 'Konditionalsatz', tip: 'Kann man „falls“ einsetzen?', explain: 'Falls du mir hilfst … → <b>Konditionalsatz</b>.' },
+      { t: 'choice', s: '[n]Indem er jeden Tag liest[/n], wird er immer besser.', q: 'Welche Satzart?', o: NAMES, a: 'Modalsatz', tip: 'Wie wird er besser?', explain: 'Auf welche Weise? → <b>Modalsatz</b>.' },
+    ]
+  },
+];
+
+const BOSS = { id: 'X', name: 'Endboss: Der Eisgolem', ico: '⚔️', steps: [
+  { t: 'choice', s: 'Wegen des Staus kamen wir zu spät.', q: 'Welcher Nebensatz-Satz ist richtig?', o: ['Weil es einen Stau gab, kamen wir zu spät.', 'Weil es einen Stau gab kamen wir zu spät.', 'Obwohl es einen Stau gab, kamen wir zu spät.'], a: 'Weil es einen Stau gab, kamen wir zu spät.', tip: 'Prüf die Konjunktion und das Komma.', explain: 'wegen → weil, und nach dem Nebensatz kommt ein <b>Komma</b>.' },
+  { t: 'build', base: 'Trotz des Regens spielten wir Fußball.', q: 'Bau den Satz mit Nebensatz.', tiles: ['Obwohl', 'es', 'regnete', ',', 'spielten', 'wir', 'Fußball'], sol: [['Obwohl', 'es', 'regnete', ',', 'spielten', 'wir', 'Fußball']], wrong: 'Konjunktion, Verb am Ende, Komma, dann gleich das Verb.', tip: 'Obwohl es …', explain: '<b>Obwohl es regnete, spielten wir Fußball.</b>' },
+  { t: 'choice', s: 'Bevor das Spiel anfing, wärmten wir uns auf.', q: 'Welche Umformung in eine adverbiale Bestimmung ist richtig?', o: ['Vor Beginn des Spiels wärmten wir uns auf.', 'Nach Beginn des Spiels wärmten wir uns auf.', 'Vor Beginn des Spiels, wärmten wir uns auf.'], a: 'Vor Beginn des Spiels wärmten wir uns auf.', tip: 'bevor → ? Und denk ans Komma.', explain: 'bevor → <b>vor</b>, kein Komma.' },
+  { t: 'split', s: 'Gestern schenkte Oma meinem Bruder ein Fahrrad.', cuts: [0, 1, 2, 4], q: 'Setz die Striche zwischen die Satzglieder.', tip: 'Umstellprobe: Oma schenkte gestern …', explain: '<b>Gestern | schenkte | Oma | meinem Bruder | ein Fahrrad.</b>' },
+  { t: 'choice', s: 'Oma schenkte [n]meinem Bruder[/n] ein Fahrrad.', q: 'Welches Satzglied ist unterstrichen?', o: GLIEDER, a: 'Dativobjekt', tip: 'Wem schenkte Oma ein Fahrrad?', explain: '<b>Wem?</b> → Dativobjekt.' },
+  { t: 'mark', s: 'Der Bus fährt um acht Uhr ab.', sol: [2, 6], q: 'Klick alle Teile des Prädikats an.', tip: 'abfahren', explain: '<b>fährt … ab</b>.' },
+  { t: 'choice', s: '[n]Um pünktlich zu sein[/n], stehe ich früh auf.', q: 'Welche Satzart?', o: NAMES, a: 'Finalsatz', tip: 'Wozu stehe ich früh auf?', explain: 'um … zu → Wozu? → <b>Finalsatz</b>.' },
+  { t: 'choice', chat: 'Ich kann heute nicht kommen, weil ich bin krank.', from: 'Nachricht aus dem Dorf', q: 'Was ist falsch?', o: ['Das Verb muss ans Ende: … weil ich krank bin.', 'Es fehlt ein Komma.', 'Alles richtig.'], a: 'Das Verb muss ans Ende: … weil ich krank bin.', tip: 'Was macht „weil“ mit dem Verb?', explain: '<b>… weil ich krank bin.</b> Gute Besserung!' },
+  { t: 'write', s: 'Bei schönem Wetter grillen wir.', q: 'Schreib selbst: Forme in einen Nebensatz um und schreib die Art in Klammern dahinter.', model: 'Wenn das Wetter schön ist, grillen wir. (Konditionalsatz)', check: ['Konjunktion „wenn“ oder „falls“.', 'Verb am Ende des Nebensatzes (ist).', 'Komma nach dem Nebensatz.', 'Art: (Konditionalsatz). „Als“ wäre falsch, es geht um eine Bedingung.'] },
+]};
+
+// Vorlesen über die Sprachausgabe des Browsers (nur Lernteile: Regeln, Merksätze, Tipps, Erklärungen)
+const TTS = typeof window !== 'undefined' && 'speechSynthesis' in window;
+let ttsVoice = null;
+function pickVoice() { try { const v = speechSynthesis.getVoices().filter(x => /^de/i.test(x.lang)); ttsVoice = v.find(x => /natural|online|google/i.test(x.name)) || v[0] || null; } catch (e) { ttsVoice = null; } }
+if (TTS) { pickVoice(); try { speechSynthesis.onvoiceschanged = pickVoice; } catch (e) {} }
+function resetSpeakBtns() { document.querySelectorAll('.say-btn[data-on]').forEach(b => { delete b.dataset.on; b.textContent = '🔊 Vorlesen'; }); }
+function stopSpeak() { if (TTS) { try { speechSynthesis.cancel(); } catch (e) {} resetSpeakBtns(); } }
+function speakText(t, btn) {
+  if (!TTS) return;
+  const wasOn = btn && btn.dataset.on;
+  stopSpeak();
+  if (wasOn) return;
+  t = t.replace(/→/g, ' wird zu ').replace(/[|·]/g, ', ').replace(/…/g, ' ').replace(/\t+/g, ', ').replace(/\s*\n+\s*/g, '. ').replace(/💡/g, '');
+  const u = new SpeechSynthesisUtterance(t);
+  u.lang = 'de-DE'; if (ttsVoice) u.voice = ttsVoice; u.rate = 0.95;
+  if (btn) { btn.dataset.on = '1'; btn.textContent = '⏹ Stopp'; u.onend = u.onerror = () => { delete btn.dataset.on; btn.textContent = '🔊 Vorlesen'; }; }
+  try { speechSynthesis.speak(u); } catch (e) {}
+}
+function addSpeakers() {
+  if (!TTS) return;
+  app.querySelectorAll('.npc .say, .rule, .tbl, .merk, .feedback > p').forEach(el => {
+    const text = el.innerText;
+    if (!text || !text.trim()) return;
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'small say-btn'; b.textContent = '🔊 Vorlesen';
+    b.onclick = () => speakText(text, b);
+    if (el.matches('.say, .merk')) el.appendChild(b); else el.insertAdjacentElement('afterend', b);
+  });
+}
+
+// Anmeldung mit Name + PIN und automatisches Senden des Ergebnisses an Svetlanas n8n. Ohne Verbindung läuft alles wie vorher (Ergebnis kopieren).
+const API = 'https://automation.svetlana-voelker.de/webhook/lernspiel';
+const NET = { pin: '', online: false, sent: '' };
+async function callApi(body) {
+  const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 8000);
+  try {
+    const r = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: ctl.signal });
+    let j = {}; try { j = await r.json(); } catch (e) {}
+    return { status: r.status, ok: !!j.ok, fehler: j.fehler };
+  } catch (e) { return { status: 0, ok: false, fehler: 'netz' }; } finally { clearTimeout(t); }
+}
+async function login(goOn) {
+  const $ = id => document.getElementById(id);
+  const name = $('name').value.trim(), pin = $('pin').value.trim(), msg = $('loginMsg');
+  if (!name) { msg.textContent = 'Bitte gib deinen Spielernamen ein.'; $('name').focus(); return; }
+  if (!/^[0-9]{4}$/.test(pin)) { msg.textContent = 'Die PIN hat genau 4 Ziffern.'; $('pin').focus(); return; }
+  msg.textContent = 'Anmelden …'; $('go').disabled = true;
+  const r = await callApi({ aktion: 'login', spieler: name, pin });
+  $('go').disabled = false;
+  if (r.status === 403) { msg.textContent = 'Diese PIN passt nicht zu diesem Namen. Versuch es noch einmal.'; $('pin').value = ''; $('pin').focus(); return; }
+  NET.online = r.ok; NET.pin = r.ok ? pin : '';
+  S.name = name; S.start = Date.now(); S.netNote = r.ok ? '' : 'Keine Verbindung: Am Ende das Ergebnis bitte kopieren und schicken.';
+  goOn();
+}
+async function sendResult(spiel, richtig, gesamt, bericht) {
+  if (!NET.online || NET.sent) return;
+  NET.sent = 'läuft';
+  const r = await callApi({ aktion: 'ergebnis', spieler: S.name, pin: NET.pin, spiel, richtig, gesamt, minuten: S.start ? Math.round((Date.now() - S.start) / 60000) : 0, bericht });
+  NET.sent = r.ok ? 'ok' : 'fehler';
+  const el = document.getElementById('sendMsg');
+  if (el) el.textContent = r.ok ? '✓ Dein Ergebnis wurde automatisch gespeichert. Du musst nichts mehr schicken.' : 'Speichern hat nicht geklappt. Bitte das Ergebnis kopieren und schicken.';
+}
+
+let S = fresh();
+function fresh() { return { screen: 'start', name: '', mod: null, i: 0, done: [], log: [], tips: 0, start: null, bossHp: 0 }; }
+const app = document.getElementById('app');
+const curMod = () => S.mod === 'X' ? BOSS : MODULE.find(m => m.id === S.mod);
+
+function hud() {
+  return `<div class="hud"><span class="stat">${esc(S.name || 'Spieler')}</span>
+    <span class="stat">${MODULE.map(m => S.done.includes(m.id) ? m.ico : '⬛').join(' ')}</span>
+    <span class="stat"><span class="gem"></span> ${S.log.filter(l => l.ok).length}</span></div>`;
+}
+
+function villageHtml() {
+  const all = MODULE.every(m => S.done.includes(m.id));
+  return `<div class="village">${MODULE.map(m => `<div class="house ${S.done.includes(m.id) ? 'done' : ''}">
+      <span class="ico">${S.done.includes(m.id) ? m.ico : '⬛'}</span><b class="px">${m.name}</b><span class="small-note">${m.teaser}</span>
+      ${S.done.includes(m.id) ? `<span class="small-note">✓ ${m.reward} gebaut</span>` : `<button class="primary small" data-mod="${m.id}">Hingehen</button>`}</div>`).join('')}
+    <div class="house ${all ? '' : 'locked'}"><span class="ico">⚔️</span><b class="px">Endboss</b><span class="small-note">Alles gemischt, ohne Hilfe.</span>
+      ${all ? `<button class="primary small" data-mod="X">Kämpfen</button>` : '<span class="small-note">Erst alle drei Orte schaffen.</span>'}</div></div>`;
+}
+
+function render() {
+  let h = hud();
+  if (S.screen === 'start') h += `<div class="block pop">
+    <span class="eyebrow">Deutsch · Teil 2</span>
+    <h1>Blockdorf: Die große Baustelle</h1>
+    <p>Der Schattenritter ist besiegt, jetzt wird das Dorf neu gebaut. Drei Meister bringen dir je etwas Neues bei: Sätze umbauen, Satzglieder finden und verkleidete Konjunktionen. Dann wartet der Eisgolem. Etwa 25 Minuten.</p>
+    <p class="small-note">Wie beim letzten Mal: erst ausprobieren, dann die Regel, dann üben. Bei manchen Aufgaben schreibst du selbst und vergleichst danach mit der Lösung. Sei dabei ehrlich zu dir.</p>
+    <div class="row"><label for="name">Dein Spielername</label></div>
+    <div class="row"><input type="text" id="name" maxlength="20" autocomplete="nickname" value="${esc(S.name)}"></div>
+    <div class="row"><label for="pin">Deine PIN (4 Ziffern)</label></div>
+    <div class="row"><input type="text" id="pin" maxlength="4" inputmode="numeric" pattern="[0-9]*" autocomplete="off" style="max-width:120px"><button class="primary" id="go">Zur Baustelle</button></div>
+    <p class="small-note">Beim ersten Mal denkst du dir die PIN selbst aus. Merk sie dir gut. Damit wird dein Ergebnis am Ende automatisch gespeichert.</p>
+    <p id="loginMsg" class="small-note" role="status"></p></div>`;
+  if (S.screen === 'map') h += `<div class="block pop"><span class="eyebrow">Die Baustelle</span><h2>Wohin gehst du?</h2><p>Du entscheidest die Reihenfolge.</p>${S.netNote ? `<p class="small-note">${esc(S.netNote)}</p>` : ''}${villageHtml()}</div>`;
+  if (S.screen === 'step') h += stepHtml();
+  if (S.screen === 'modEnd') { const m = curMod(); const l = S.log.filter(x => x.mod === m.id); h += `<div class="block pop"><span class="eyebrow">${m.name} geschafft</span><div class="tool">${m.ico}</div><h2>${m.reward} gebaut!</h2>
+    <p>Beim ersten Versuch richtig: <b>${l.filter(x => x.ok).length} von ${l.length}</b>.</p>${villageHtml()}</div>`; }
+  if (S.screen === 'end') h += endHtml();
+  app.innerHTML = h;
+  bind();
+  addSpeakers();
+}
+
+const words = s => s.split(' ');
+
+function stepHtml() {
+  const m = curMod(), st = m.steps[S.i], boss = m.id === 'X', total = m.steps.length;
+  const head = `<div class="row" style="justify-content:space-between"><span class="eyebrow">${m.name}</span><span class="eyebrow">${S.i + 1} / ${total}</span></div>
+    ${boss ? `<div class="hp"><i style="width:${Math.round(S.bossHp / total * 100)}%"></i></div>` : ''}`;
+  if (st.t === 'info') return `<div class="block ${boss ? 'end' : ''} pop">${head}${st.html}<div class="row"><button class="primary" id="next">Verstanden, weiter</button></div></div>`;
+  let body = '';
+  if (st.t === 'choice') {
+    S.opts = S.opts || shuffle(st.o);
+    const sent = st.chat ? `<div class="chat"><small>${esc(st.from)}</small>${esc(st.chat)}</div>`
+      : `<div class="sentence">${st.raw ? st.raw : fmt(st.s)}</div>`;
+    body = `${sent}<h3>${esc(st.q)}</h3>${st.help && !S.shown ? `<div class="merk">${esc(st.help)}</div>` : ''}
+      <div class="opts">${S.opts.map(o => { let c = ''; if (S.shown && o === st.a) c = 'right'; else if (S.sel.includes(o)) c = 'wrong'; return `<button class="${c}" data-o="${esc(o)}" ${S.shown || S.sel.includes(o) ? 'disabled' : ''}>${esc(o)}</button>`; }).join('')}</div>`;
+  }
+  if (st.t === 'build') {
+    body = `<div class="sentence">${esc(st.base)}</div><h3>${esc(st.q)}</h3>
+      <div class="tiles slot">${S.placed.length ? S.placed.map((x, i) => `<button class="tile" data-back="${i}" ${S.shown ? 'disabled' : ''}>${esc(x)}</button>`).join('') + (S.shown ? '<span class="prefix">.</span>' : '') : '<span class="small-note">Klick unten auf die Bausteine, um sie hier hinzulegen. Klick hier drauf, um sie zurückzunehmen.</span>'}</div>
+      <div class="tiles">${S.pool.map((x, i) => `<button class="tile" data-put="${i}" ${S.shown ? 'disabled' : ''}>${esc(x)}</button>`).join('')}</div>
+      ${!S.shown ? `<div class="row"><button class="primary" id="check" ${S.pool.length ? 'disabled' : ''}>Prüfen</button></div>` : ''}`;
+  }
+  if (st.t === 'split') {
+    const w = words(st.s);
+    body = `<h3>${esc(st.q)}</h3>${st.help && !S.shown ? `<div class="merk">${esc(st.help)}</div>` : ''}
+      <div class="words">${w.map((x, i) => {
+        if (i === w.length - 1) return `<span class="w">${esc(x)}</span>`;
+        const on = S.cuts.includes(i), should = st.cuts.includes(i);
+        let c = on ? 'on' : '';
+        if (S.shown) c = on ? (should ? 'on' : 'on bad') : (should ? 'miss' : '');
+        return `<span class="w">${esc(x)}</span><button class="cut ${c}" data-cut="${i}" aria-label="Strich nach ${esc(x)}" ${S.shown ? 'disabled' : ''}>${on || (S.shown && should) ? '|' : '·'}</button>`;
+      }).join('')}</div>
+      ${!S.shown ? `<div class="row"><button class="primary" id="check">Prüfen</button></div>` : ''}`;
+  }
+  if (st.t === 'mark') {
+    const w = words(st.s);
+    body = `<h3>${esc(st.q)}</h3>${st.help && !S.shown ? `<div class="merk">${esc(st.help)}</div>` : ''}
+      <div class="words">${w.map((x, i) => {
+        let c = S.msel.includes(i) ? 'sel' : '';
+        if (S.shown) c = st.sol.includes(i) ? 'right' : (S.msel.includes(i) ? 'wrong' : '');
+        return `<button class="wbtn ${c}" data-w="${i}" ${S.shown ? 'disabled' : ''}>${esc(x)}</button>`; }).join('')}</div>
+      ${!S.shown ? `<div class="row"><button class="primary" id="check">Prüfen</button></div>` : ''}`;
+  }
+  if (st.t === 'write') {
+    body = `<div class="sentence">${esc(st.s)}</div><h3>${esc(st.q)}</h3>
+      <textarea class="answer" id="w" ${S.wstage ? 'readonly' : ''} placeholder="Schreib hier deinen Satz.">${esc(S.wtext || '')}</textarea>
+      ${!S.wstage ? `<div class="row"><button class="primary" id="wdone">Fertig, Lösung zeigen</button></div>` : ''}
+      ${S.wstage ? `<div class="merk"><b>Musterlösung:</b><span>${esc(st.model)}</span><b>Prüf deinen Satz:</b><ul class="check">${st.check.map(c => `<li>${esc(c)}</li>`).join('')}</ul></div>
+        ${!S.shown ? `<h3>Wie war dein Satz?</h3><div class="opts"><button data-rate="1">Alles richtig</button><button data-rate="0">Ich hatte einen Fehler</button></div>` : ''}` : ''}`;
+    if (S.shown) return `<div class="block ${boss ? 'end' : ''}">${head}${body}<div class="feedback ${S.solved ? 'ok' : 'no'} pop"><span class="head">${S.solved ? 'Stark!' : 'Gut, dass du es gemerkt hast!'}</span><p>${S.solved ? 'Weiter so.' : 'Schreib die Musterlösung einmal ab, dann bleibt sie hängen.'}</p><div class="row"><button class="primary" id="next">Weiter</button></div></div></div>`;
+  }
+  let fb = '';
+  if (S.msg && !S.shown) fb = `<div class="feedback no pop" role="status"><span class="head">Noch nicht</span><p>${S.msg}</p></div>`;
+  if (S.shown) fb = `<div class="feedback ${S.solved ? 'ok' : 'no'} pop" role="status"><span class="head">${S.solved ? (S.tries === 1 ? 'Richtig!' : 'Jetzt stimmt es!') : 'Hier ist die Lösung'}</span><p>${st.explain}</p>
+    <div class="row"><button class="primary" id="next">Weiter</button></div></div>`;
+  const tipBtn = !S.shown && st.tip ? (S.tip ? `<div class="merk pop">💡 ${esc(st.tip)}</div>` : `<div class="row"><button class="small" id="tip">💡 Tipp holen</button></div>`) : '';
+  return `<div class="block ${boss ? 'end' : ''}">${head}${body}${tipBtn}${fb}</div>`;
+}
+
+const same = (a, b) => a.length === b.length && a.every(x => b.includes(x));
+
+function attempt(ok, chosen) {
+  const m = curMod(), st = m.steps[S.i];
+  S.tries++;
+  if (S.tries === 1) S.log.push({ mod: m.id, step: S.i, ok, chosen, st, tip: S.tip });
+  if (ok) { S.solved = true; S.shown = true; S.msg = ''; if (m.id === 'X' && S.tries === 1) S.bossHp = Math.max(0, S.bossHp - 1); }
+  else if (S.tries >= (st.t === 'choice' && st.o.length <= 2 ? 1 : 2) && st.t !== 'build' || S.tries >= 3) { S.shown = true; S.solved = false; S.msg = ''; }
+  else S.msg = st.wrong || 'Schau noch einmal genau hin. Du kannst dir auch einen Tipp holen.';
+  render();
+  const n = document.getElementById('next'); if (n) n.focus();
+}
+
+function enterStep() {
+  stopSpeak();
+  const st = curMod().steps[S.i];
+  Object.assign(S, { tries: 0, shown: false, solved: false, tip: false, sel: [], msg: '', opts: null, cuts: [], msel: [], wtext: '', wstage: 0 });
+  if (st.t === 'build') {
+    S.placed = [];
+    let p; do { p = shuffle(st.tiles); } while (st.sol.some(s => s.join('|') === p.join('|')));
+    S.pool = p;
+  }
+  render(); window.scrollTo({ top: 0 });
+}
+
+function next() {
+  stopSpeak();
+  const m = curMod();
+  S.i++;
+  if (S.i >= m.steps.length) {
+    if (m.id === 'X') { S.screen = 'end'; render(); window.scrollTo({ top: 0 }); sendResult('Blockdorf Teil 2: Baustelle', S.log.filter(x => x.ok).length, S.log.length, report()); return; }
+    S.done.push(m.id); S.screen = 'modEnd'; render(); window.scrollTo({ top: 0 }); return;
+  }
+  enterStep();
+}
+
+function describe(st) {
+  if (st.t === 'build') return st.base;
+  if (st.chat) return st.chat;
+  if (st.raw) return st.raw.replace(/<br>/g, ' / ');
+  return plain(st.s);
+}
+function rightOf(st) {
+  if (st.t === 'build') return joinTiles(st.sol[0]);
+  if (st.t === 'split') { const w = words(st.s); return w.map((x, i) => x + (st.cuts.includes(i) ? ' |' : '')).join(' '); }
+  if (st.t === 'mark') return st.sol.map(i => words(st.s)[i]).join(' … ');
+  if (st.t === 'write') return st.model;
+  return st.a;
+}
+
+function report() {
+  const L = ['BAUSTELLE-ERGEBNIS (Teil 2: Umformen, Satzglieder, verkleidete Konjunktionen)', `Spieler: ${S.name || 'unbekannt'} | Datum: ${new Date().toLocaleDateString('de-DE')} | Dauer: ${S.start ? Math.round((Date.now() - S.start) / 60000) : '?'} Min. | Tipps: ${S.tips}x`, ''];
+  [...MODULE, BOSS].forEach(m => { const l = S.log.filter(x => x.mod === m.id); if (l.length) L.push(`- ${m.name}: ${l.filter(x => x.ok).length}/${l.length} beim ersten Versuch`); });
+  const wrong = S.log.filter(x => !x.ok && x.st.t !== 'write');
+  L.push('', wrong.length ? 'Fehler (erster Versuch):' : 'Keine Fehler.');
+  wrong.forEach(x => L.push(`- ${x.mod === 'X' ? 'Boss' : x.mod}${x.step + 1}: "${describe(x.st)}" | gewählt: ${x.chosen} | richtig: ${rightOf(x.st)}${x.tip ? ' | mit Tipp' : ''}`));
+  const w = S.log.filter(x => x.st.t === 'write');
+  if (w.length) { L.push('', 'Selbst geschrieben (Selbsteinschätzung):'); w.forEach(x => L.push(`- ${x.mod === 'X' ? 'Boss' : x.mod}${x.step + 1}: Aufgabe "${x.st.s}" | geschrieben: "${x.chosen}" | selbst bewertet: ${x.ok ? 'richtig' : 'Fehler'}`)); }
+  return L.join('\n');
+}
+
+function endHtml() {
+  const l = S.log.filter(x => x.mod === 'X');
+  return `<div class="block end pop"><span class="eyebrow">Das Dorf ist fertig gebaut</span><div class="tool">🏆</div>
+    <h1>Der Eisgolem ist geschmolzen!</h1>
+    <p>Gegen den Boss beim ersten Versuch richtig: <b>${l.filter(x => x.ok).length} von ${l.length}</b>. Insgesamt ${S.log.filter(x => x.ok).length} von ${S.log.length}.</p>
+    <div class="merk"><b>Das hast du heute gelernt:</b><span>wegen → weil, trotz → obwohl, nach → nachdem, bei → wenn, zum → damit, durch → indem.</span><span>Adverbiale Bestimmung: kein eigenes Verb, kein Komma. Adverbialsatz: Verb am Ende, mit Komma.</span><span>Satzglieder findest du mit der Umstellprobe, die Art mit der Frageprobe: Wer? Wen? Wem? Wessen?</span></div>
+    <h3>Ergebnis für die Auswertung</h3><p class="small-note">Kopieren und in den Chat mit Claude einfügen.</p>
+    <textarea id="report" readonly>${esc(report())}</textarea>
+    <div class="row"><button class="primary" id="copy">Ergebnis kopieren</button><span id="copied" class="small-note" role="status"></span></div><p id="sendMsg" class="small-note" role="status">${NET.online ? (NET.sent === 'ok' ? '✓ Dein Ergebnis wurde automatisch gespeichert. Du musst nichts mehr schicken.' : 'Ergebnis wird gespeichert …') : 'Bitte kopieren und schicken.'}</p><div class="row"><button id="restart">Neu starten</button></div></div>`;
+}
+
+function bind() {
+  const $ = id => document.getElementById(id);
+  if ($('go')) { const go = () => login(() => { S.screen = 'map'; render(); }); $('go').onclick = go; $('pin').onkeydown = e => { if (e.key === 'Enter') go(); }; $('name').onkeydown = e => { if (e.key === 'Enter') $('pin').focus(); }; }
+  app.querySelectorAll('[data-mod]').forEach(b => b.onclick = () => { S.mod = b.dataset.mod; S.i = 0; if (S.mod === 'X') S.bossHp = BOSS.steps.length; S.screen = 'step'; enterStep(); });
+  if ($('next')) $('next').onclick = next;
+  if ($('tip')) $('tip').onclick = () => { S.tip = true; S.tips++; render(); };
+  app.querySelectorAll('[data-o]').forEach(b => b.onclick = () => { const st = curMod().steps[S.i], o = b.dataset.o; S.sel.push(o); attempt(o === st.a, o); });
+  app.querySelectorAll('[data-put]').forEach(b => b.onclick = () => { S.placed.push(S.pool.splice(+b.dataset.put, 1)[0]); S.msg = ''; render(); });
+  app.querySelectorAll('[data-back]').forEach(b => b.onclick = () => { S.pool.push(S.placed.splice(+b.dataset.back, 1)[0]); render(); });
+  app.querySelectorAll('[data-cut]').forEach(b => b.onclick = () => { const i = +b.dataset.cut; S.cuts = S.cuts.includes(i) ? S.cuts.filter(x => x !== i) : [...S.cuts, i]; S.msg = ''; render(); });
+  app.querySelectorAll('[data-w]').forEach(b => b.onclick = () => { const i = +b.dataset.w; S.msel = S.msel.includes(i) ? S.msel.filter(x => x !== i) : [...S.msel, i]; S.msg = ''; render(); });
+  if ($('wdone')) $('wdone').onclick = () => { const t = $('w').value.trim(); if (!t) { $('w').focus(); return; } S.wtext = t; S.wstage = 1; render(); };
+  app.querySelectorAll('[data-rate]').forEach(b => b.onclick = () => { const ok = b.dataset.rate === '1'; S.tries = 1; S.log.push({ mod: curMod().id, step: S.i, ok, chosen: S.wtext, st: curMod().steps[S.i], tip: false }); S.solved = ok; S.shown = true; if (curMod().id === 'X' && ok) S.bossHp = Math.max(0, S.bossHp - 1); render(); });
+  if ($('check')) $('check').onclick = () => {
+    const st = curMod().steps[S.i];
+    if (st.t === 'build') {
+      const ok = st.sol.some(s => s.join('|') === S.placed.join('|')), chosen = joinTiles(S.placed);
+      if (!ok && S.tries < 2) { S.pool = shuffle(S.placed); S.placed = []; }
+      if (!ok && S.tries >= 2) S.placed = st.sol[0].slice();
+      attempt(ok, chosen);
+    } else if (st.t === 'split') {
+      const w = words(st.s);
+      attempt(same(S.cuts, st.cuts), w.map((x, i) => x + (S.cuts.includes(i) ? ' |' : '')).join(' '));
+    } else if (st.t === 'mark') {
+      attempt(same(S.msel, st.sol), S.msel.sort((a, b) => a - b).map(i => words(st.s)[i]).join(' … ') || '(nichts)');
+    }
+  };
+  if ($('copy')) $('copy').onclick = () => {
+    const ta = $('report'), done = m => { $('copied').textContent = m; };
+    try { navigator.clipboard.writeText(ta.value).then(() => done('Kopiert.'), () => { ta.select(); done('Text ist markiert. Jetzt Strg+C drücken.'); }); }
+    catch (e) { ta.select(); done('Text ist markiert. Jetzt Strg+C drücken.'); }
+  };
+  if ($('restart')) $('restart').onclick = () => { const n = S.name; S = fresh(); S.name = n; render(); };
+}
+render();
+</script>
+
+</body>
+</html>
