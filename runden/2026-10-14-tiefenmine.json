@@ -1,0 +1,834 @@
+{
+ "titel": "Blockdorf: Die Tiefenmine",
+ "fach": "Mathe · Klasse 7",
+ "klareZahlen": true,
+ "ort": "Die Tiefenmine",
+ "intro": "Unter Blockdorf liegt eine Mine, tief unter dem Meeresspiegel. Drei Meister bringen dir bei, wie man mit Plus und Minus rechnet und wie man die Mitte findet. Ganz unten wartet der Zahlen-Golem. Etwa 30 Minuten.",
+ "start": "In die Mine",
+ "sieg": "Der Zahlen-Golem ist zerfallen!",
+ "lernt": [
+  "Links auf der Zahlengeraden ist kleiner: −15 < −5.",
+  "Plus: gleiches Vorzeichen → Beträge addieren, Vorzeichen behalten. Verschieden → abziehen, Vorzeichen vom Stärkeren.",
+  "Minus heißt Gegenzahl addieren: − (−5) wird + 5, − (+5) wird − 5.",
+  "Mittel: Summe : Anzahl. Median: erst ordnen, dann die Mitte. Spannweite: größter − kleinster Wert."
+ ],
+ "module": [
+  {
+   "id": "A",
+   "name": "Schacht der Vorzeichen",
+   "ico": "⛏️",
+   "reward": "Fackel",
+   "teaser": "Über und unter null, Zahlengerade",
+   "steps": [
+    {
+     "t": "info",
+     "html": "<div class=\"npc\"><span class=\"face\">⛏️</span><div class=\"say\">Willkommen in der Tiefenmine! Hier geht es <b>über</b> und <b>unter</b> null. Der Meeresspiegel ist unsere Null. Alles darüber ist <b>positiv (+)</b>, alles darunter <b>negativ (−)</b>. Genauso beim Thermometer: über 0 °C plus, unter 0 °C minus.</div></div><div class=\"rule\"><div><b class=\"h\">über null</b><span>17 °C über null = <b>+17 °C</b></span><span>372 m über NN = <b>+372 m</b></span></div><div><b class=\"h\">unter null</b><span>8 °C unter null = <b>−8 °C</b></span><span>403 m unter NN = <b>−403 m</b></span></div></div><div class=\"merk\"><b>NN heißt Normal Null.</b><span>Seit 1879 ist das der mittlere Wasserstand in Amsterdam. Von dort misst man alle Höhen.</span></div>"
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">8 °C unter null</span>",
+     "q": "Wie schreibst du das mit Vorzeichen?",
+     "o": [
+      "+8 °C",
+      "−8 °C",
+      "−0,8 °C",
+      "8 °C"
+     ],
+     "a": "−8 °C",
+     "explain": "Unter null heißt negativ: <b>−8 °C</b>.",
+     "help": "Hilfe: unter null → Minus."
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">Totes Meer: 403 m unter NN</span>",
+     "q": "Welche Zahl gehört auf die Höhenskala?",
+     "o": [
+      "+403 m",
+      "−403 m",
+      "−43 m",
+      "+43 m"
+     ],
+     "a": "−403 m",
+     "explain": "Unter NN ist negativ: <b>−403 m</b>. Das Tote Meer ist der tiefste See auf der Liste.",
+     "help": "Hilfe: unter NN → Minus."
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">Genfersee: 372 m über NN</span>",
+     "q": "Welche Zahl gehört auf die Höhenskala?",
+     "o": [
+      "−372 m",
+      "+372 m",
+      "+37,2 m",
+      "−37 m"
+     ],
+     "a": "+372 m",
+     "explain": "Über NN ist positiv: <b>+372 m</b>.",
+     "tip": "Liegt der See höher oder tiefer als das Meer?"
+    },
+    {
+     "t": "info",
+     "html": "<h3>Die Zahlengerade</h3><div class=\"rule\"><div><b class=\"h\">Links ist kleiner</b><span>… −3  −2  −1  0  +1  +2  +3 …</span><span>Je weiter links, desto kleiner.</span><span><b>−15 &lt; −5</b>, denn −15 liegt weiter links.</span></div><div><b class=\"h\">Betrag und Gegenzahl</b><span>Betrag = Abstand zur 0, ohne Vorzeichen: |−7| = <b>7</b></span><span>Gegenzahl = gleicher Betrag, anderes Vorzeichen: −7 ↔ <b>+7</b></span></div></div><div class=\"merk\"><b>Kälter = kleiner.</b><span>−16 °C ist kälter als −2 °C. Also: −16 &lt; −2.</span></div>"
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">−15  ___  −5</span>",
+     "q": "Welches Zeichen gehört in die Lücke?",
+     "o": [
+      "<",
+      ">",
+      "="
+     ],
+     "a": "<",
+     "explain": "−15 liegt weiter links als −5, also ist es kleiner: <b>−15 &lt; −5</b>.",
+     "help": "Hilfe: Wer liegt weiter links? Der ist kleiner."
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">−16 °C   oder   −2 °C</span>",
+     "q": "Welche Temperatur ist kälter?",
+     "o": [
+      "−16 °C",
+      "−2 °C"
+     ],
+     "a": "−16 °C",
+     "explain": "−16 °C ist kälter. Bei Minuszahlen gilt: großer Betrag = weiter links = kleiner.",
+     "tip": "Denk an das Thermometer: Wie weit geht die Säule nach unten?"
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">−4   |   −3,5   |   0,5   |   −3</span>",
+     "q": "Welche Zahl ist die kleinste?",
+     "o": [
+      "−3,5",
+      "−3",
+      "0,5",
+      "−4"
+     ],
+     "a": "−4",
+     "explain": "−4 liegt am weitesten links. Reihenfolge: −4 &lt; −3,5 &lt; −3 &lt; 0,5.",
+     "tip": "Stell dir alle Zahlen auf der Zahlengeraden vor."
+    },
+    {
+     "t": "choice",
+     "raw": "Zahlengerade: <b>A</b> ● ——— <b>−96</b> ——— <b>B</b> ● ——— <b>0</b> →",
+     "q": "Welcher Punkt zeigt die Lage von −40?",
+     "o": [
+      "A",
+      "B"
+     ],
+     "a": "B",
+     "explain": "−40 ist größer als −96, also liegt es rechts von −96, zwischen −96 und 0: <b>B</b>.",
+     "tip": "Ist −40 größer oder kleiner als −96?"
+    },
+    {
+     "t": "choice",
+     "raw": "Zahlengerade: <b>A</b> ● ——— <b>−89</b> ——— <b>B</b> ● ——— <b>0</b> →",
+     "q": "Welcher Punkt zeigt die Lage von −111?",
+     "o": [
+      "A",
+      "B"
+     ],
+     "a": "A",
+     "explain": "−111 ist kleiner als −89, also liegt es links davon: <b>A</b>.",
+     "tip": "Ist −111 größer oder kleiner als −89?"
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">|−12,5|</span>",
+     "q": "Was ist der Betrag?",
+     "o": [
+      "−12,5",
+      "12,5",
+      "0",
+      "+12,5 und −12,5"
+     ],
+     "a": "12,5",
+     "explain": "Der Betrag ist der Abstand zur 0, immer ohne Minus: <b>12,5</b>.",
+     "tip": "Wie weit ist die Zahl von der 0 entfernt?"
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">Gegenzahl von +3/4</span>",
+     "q": "Welche Zahl ist es?",
+     "o": [
+      "4/3",
+      "−3/4",
+      "+3/4",
+      "−4/3"
+     ],
+     "a": "−3/4",
+     "explain": "Gleicher Betrag, anderes Vorzeichen: <b>−3/4</b>.",
+     "tip": "Nur das Vorzeichen wechselt."
+    }
+   ]
+  },
+  {
+   "id": "B",
+   "name": "Schmiede der Zeichen",
+   "ico": "🔨",
+   "reward": "Spitzhacke",
+   "teaser": "Plus und Minus mit Vorzeichen",
+   "steps": [
+    {
+     "t": "info",
+     "html": "<div class=\"npc\"><span class=\"face\">🔨</span><div class=\"say\">In meiner Schmiede rechnen wir mit Vorzeichen. Schau dir zuerst das Muster an. Was passiert, wenn die zweite Zahl immer um 1 kleiner wird?</div></div><div class=\"tbl\"><table><tbody><tr><td>(+2) + (+2)</td><td>= 4</td></tr><tr><td>(+2) + (+1)</td><td>= 3</td></tr><tr><td>(+2) + 0</td><td>= 2</td></tr><tr><td>(+2) + (−1)</td><td>= 1</td></tr><tr><td>(+2) + (−2)</td><td>= 0</td></tr><tr><td>(+2) + (−3)</td><td>= ?</td></tr></tbody></table></div>"
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">(+2) + (−3) = ?</span>",
+     "q": "Setz das Muster fort.",
+     "o": [
+      "+1",
+      "+5",
+      "−1",
+      "−5"
+     ],
+     "a": "−1",
+     "explain": "Das Ergebnis wird immer um 1 kleiner: 2, 1, 0, <b>−1</b>. Eine negative Zahl addieren heißt: auf der Zahlengeraden nach <b>links</b> gehen.",
+     "help": "Hilfe: 4, 3, 2, 1, 0, … was kommt nach 0?"
+    },
+    {
+     "t": "info",
+     "html": "<h3>Die Plus-Regel</h3><div class=\"rule\"><div><b class=\"h\">Gleiches Vorzeichen</b><span>Beträge <b>addieren</b>, Vorzeichen <b>behalten</b>.</span><span>(−55) + (−62) = <b>−117</b></span></div><div><b class=\"h\">Verschiedene Vorzeichen</b><span>Kleineren Betrag vom größeren <b>abziehen</b>.</span><span>Vorzeichen der Zahl mit dem <b>größeren Betrag</b>.</span><span>(−63) + (+12) = <b>−51</b></span></div></div><div class=\"merk\"><b>Erst Vorzeichen, dann rechnen.</b><span>Frag dich zuerst: Gleich oder verschieden? Dann: Wer ist stärker?</span></div>"
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">(−55) + (−62)</span>",
+     "q": "Wie viel ist das?",
+     "o": [
+      "+117",
+      "−7",
+      "−117",
+      "+7"
+     ],
+     "a": "−117",
+     "explain": "Gleiches Vorzeichen: 55 + 62 = 117, Minus bleibt: <b>−117</b>.",
+     "help": "Hilfe: Beide minus → Beträge addieren, Minus behalten."
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">(−63) + (+12)</span>",
+     "q": "Wie viel ist das?",
+     "o": [
+      "−75",
+      "+51",
+      "+75",
+      "−51"
+     ],
+     "a": "−51",
+     "explain": "Verschieden: 63 − 12 = 51. Die 63 hat den größeren Betrag und ist negativ: <b>−51</b>.",
+     "help": "Hilfe: Verschieden → abziehen. Wer hat den größeren Betrag?"
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">(+112) + (−344)</span>",
+     "q": "Wie viel ist das?",
+     "o": [
+      "+232",
+      "−456",
+      "−232",
+      "+456"
+     ],
+     "a": "−232",
+     "explain": "Verschieden: 344 − 112 = 232. Die −344 ist stärker: <b>−232</b>.",
+     "tip": "Gleiche oder verschiedene Vorzeichen?"
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">(−76) + (+51)</span>",
+     "q": "Wie viel ist das?",
+     "o": [
+      "+25",
+      "−25",
+      "−127",
+      "+127"
+     ],
+     "a": "−25",
+     "explain": "76 − 51 = 25, die −76 ist stärker: <b>−25</b>.",
+     "tip": "Welche Zahl hat den größeren Betrag?"
+    },
+    {
+     "t": "info",
+     "html": "<h3>Die Minus-Regel</h3><div class=\"npc\"><span class=\"face\">🔨</span><div class=\"say\">Minus ist ein Trick: Du machst daraus Plus. <b>Subtrahieren heißt, die Gegenzahl addieren.</b></div></div><div class=\"rule\"><div><b class=\"h\">− (+…) wird + (−…)</b><span>(−33) − (+55)</span><span>= (−33) + (−55) = <b>−88</b></span></div><div><b class=\"h\">− (−…) wird + (+…)</b><span>(−22) − (−66)</span><span>= (−22) + (+66) = <b>44</b></span></div></div><div class=\"merk\"><b>Zwei Minus hintereinander werden Plus.</b><span>Danach gilt wieder die Plus-Regel.</span></div>"
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">(−22) − (−66)</span>",
+     "q": "Wie schreibst du das als Plus-Aufgabe?",
+     "o": [
+      "(+22) + (−66)",
+      "(−22) + (−66)",
+      "(−22) + (+66)",
+      "(+22) + (+66)"
+     ],
+     "a": "(−22) + (+66)",
+     "explain": "Die erste Zahl bleibt. Aus − (−66) wird + (+66). Ergebnis: <b>44</b>.",
+     "help": "Hilfe: Die erste Zahl bleibt gleich. Nur das Rechenzeichen und die Gegenzahl ändern sich."
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">(−33) − (+55)</span>",
+     "q": "Wie viel ist das?",
+     "o": [
+      "+88",
+      "−22",
+      "+22",
+      "−88"
+     ],
+     "a": "−88",
+     "explain": "(−33) + (−55): gleiches Vorzeichen, 33 + 55 = 88, also <b>−88</b>.",
+     "help": "Hilfe: Erst umschreiben: (−33) + (−55)."
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">(+81) − (−19)</span>",
+     "q": "Wie viel ist das?",
+     "o": [
+      "62",
+      "100",
+      "−100",
+      "−62"
+     ],
+     "a": "100",
+     "explain": "(+81) + (+19) = <b>100</b>. Zwei Minus werden Plus.",
+     "tip": "Was wird aus − (−19)?"
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">(+45) − (+35)</span>",
+     "q": "Wie viel ist das?",
+     "o": [
+      "−10",
+      "80",
+      "10",
+      "−80"
+     ],
+     "a": "10",
+     "explain": "(+45) + (−35): 45 − 35 = <b>10</b>, die 45 ist stärker.",
+     "tip": "Schreib es als Plus-Aufgabe."
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">(−188) − (+226)</span>",
+     "q": "Wie viel ist das?",
+     "o": [
+      "+38",
+      "−414",
+      "−38",
+      "+414"
+     ],
+     "a": "−414",
+     "explain": "(−188) + (−226) = <b>−414</b>.",
+     "tip": "Nach dem Umschreiben: gleiche oder verschiedene Vorzeichen?"
+    },
+    {
+     "t": "info",
+     "html": "<h3>Kommazahlen und Brüche</h3><div class=\"rule\"><div><b class=\"h\">Gleiche Regeln!</b><span>(−12,7) + (+38,43)</span><span>38,43 − 12,7 = <b>25,73</b></span><span>Komma unter Komma rechnen.</span></div><div><b class=\"h\">Brüche: erst gleicher Nenner</b><span>(+2/5) + (−1/3)</span><span>= (+6/15) + (−5/15) = <b>1/15</b></span></div></div><div class=\"merk\"><b>Gemischte Zahl:</b><span>3 3/8 = 27/8. Erst umwandeln, dann rechnen.</span></div>"
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">(−485,8) + (−166,9)</span>",
+     "q": "Wie viel ist das?",
+     "o": [
+      "+652,7",
+      "−318,9",
+      "−652,7",
+      "+318,9"
+     ],
+     "a": "−652,7",
+     "explain": "Gleiches Vorzeichen: 485,8 + 166,9 = 652,7, Minus bleibt: <b>−652,7</b>.",
+     "tip": "Beide negativ. Was machst du mit den Beträgen?"
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">(−12,7) + (+38,43)</span>",
+     "q": "Wie viel ist das?",
+     "o": [
+      "−25,73",
+      "51,13",
+      "25,73",
+      "−51,13"
+     ],
+     "a": "25,73",
+     "explain": "38,43 − 12,7 = 25,73. Die 38,43 ist stärker und positiv: <b>25,73</b>.",
+     "tip": "Welche Zahl hat den größeren Betrag?"
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">(+2/5) + (−1/3)</span>",
+     "q": "Wie viel ist das?",
+     "o": [
+      "−1/15",
+      "11/15",
+      "1/2",
+      "1/15"
+     ],
+     "a": "1/15",
+     "explain": "Gleicher Nenner 15: 6/15 − 5/15 = <b>1/15</b>.",
+     "help": "Hilfe: 2/5 = 6/15 und 1/3 = 5/15."
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">(+7/9) − (+5/12)</span>",
+     "q": "Wie viel ist das?",
+     "o": [
+      "13/36",
+      "2/3",
+      "−13/36",
+      "43/36"
+     ],
+     "a": "13/36",
+     "explain": "Gleicher Nenner 36: 28/36 − 15/36 = <b>13/36</b>.",
+     "tip": "Gemeinsamer Nenner von 9 und 12 ist 36."
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">(−0,087) − (−7,08)</span>",
+     "q": "Wie viel ist das?",
+     "o": [
+      "−7,167",
+      "6,993",
+      "7,167",
+      "−6,993"
+     ],
+     "a": "6,993",
+     "explain": "(−0,087) + (+7,08) = 7,080 − 0,087 = <b>6,993</b>.",
+     "tip": "Erst umschreiben, dann Komma unter Komma: 7,080 − 0,087."
+    },
+    {
+     "t": "info",
+     "html": "<h3>Rechenketten</h3><div class=\"rule\"><div><b class=\"h\">Schritt für Schritt von links nach rechts</b><span>(−36,8) − (−4,6) + (+6,4)</span><span>= (−36,8) + (+4,6) + (+6,4)</span><span>= (−32,2) + (+6,4) = <b>−25,8</b></span></div></div><div class=\"merk\"><b>Kontostand:</b><span>Einzahlen ist plus, Abheben ist minus. Unter 0 € heißt: Das Konto ist im Minus.</span></div>"
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">(+23) + (+44) + (−12)</span>",
+     "q": "Wie viel ist das?",
+     "o": [
+      "79",
+      "55",
+      "−55",
+      "33"
+     ],
+     "a": "55",
+     "explain": "23 + 44 = 67, dann 67 − 12 = <b>55</b>.",
+     "tip": "Erst die ersten zwei Zahlen."
+    },
+    {
+     "t": "choice",
+     "raw": "<span style=\"font-size:1.35em;font-weight:700\">(+1,6) − (−1,7) − (−3,2)</span>",
+     "q": "Wie viel ist das?",
+     "o": [
+      "−3,3",
+      "6,5",
+      "3,3",
+      "0,1"
+     ],
+     "a": "6,5",
+     "explain": "Zweimal − (−…) wird +: 1,6 + 1,7 + 3,2 = <b>6,5</b>.",
+     "tip": "Was wird aus − (−1,7)?"
+    },
+    {
+     "t": "choice",
+     "raw": "Auf Svens Konto sind <b>92 €</b>. Er zahlt <b>15 €</b> ein, hebt <b>100 €</b> ab, bekommt <b>250 €</b> und bezahlt eine Rechnung über <b>450 €</b>.",
+     "q": "Wie ist sein Kontostand jetzt?",
+     "o": [
+      "193 €",
+      "−193 €",
+      "−7 €",
+      "907 €"
+     ],
+     "a": "−193 €",
+     "explain": "92 + 15 − 100 + 250 − 450 = <b>−193 €</b>. Das Konto ist im Minus.",
+     "tip": "Schreib alles als eine Kette: 92 + 15 − 100 …"
+    },
+    {
+     "t": "choice",
+     "raw": "Steve steht in der Mine auf Höhe <b>−40</b>. Er klettert <b>55 Blöcke</b> nach oben.",
+     "q": "Auf welcher Höhe ist er jetzt?",
+     "o": [
+      "−95",
+      "+15",
+      "−15",
+      "+95"
+     ],
+     "a": "+15",
+     "explain": "(−40) + (+55) = <b>+15</b>. Er ist wieder über dem Meeresspiegel.",
+     "tip": "Nach oben ist plus."
+    }
+   ]
+  },
+  {
+   "id": "C",
+   "name": "Marktplatz der Mitte",
+   "ico": "🧮",
+   "reward": "Schatzkarte",
+   "teaser": "Mittel, Median, Spannweite",
+   "steps": [
+    {
+     "t": "info",
+     "html": "<div class=\"npc\"><span class=\"face\">🧮</span><div class=\"say\">Auf meinem Marktplatz geht es um die <b>Mitte</b>. Es gibt drei Werkzeuge: das <b>arithmetische Mittel</b>, den <b>Median</b> und die <b>Spannweite</b>.</div></div><div class=\"rule\"><div><b class=\"h\">Arithmetisches Mittel x̄</b><span>(Durchschnitt)</span><span>Alle Werte <b>addieren</b>, durch die <b>Anzahl</b> teilen.</span><span>28, 32, 14, 16, 17, 13 → 120 : 6 = <b>20</b></span></div></div>"
+    },
+    {
+     "t": "choice",
+     "raw": "Dennis hat an 6 Tagen gespielt (Minuten): <b>28  32  14  16  17  13</b>",
+     "q": "Wie lange hat er im Durchschnitt gespielt?",
+     "o": [
+      "16 min",
+      "20 min",
+      "24 min",
+      "120 min"
+     ],
+     "a": "20 min",
+     "explain": "28 + 32 + 14 + 16 + 17 + 13 = 120, und 120 : 6 = <b>20 min</b>.",
+     "help": "Hilfe: Summe ist 120. Jetzt durch die Anzahl teilen."
+    },
+    {
+     "t": "info",
+     "html": "<h3>Mittel aus einer Tabelle</h3><div class=\"tbl\"><table><thead><tr><th>Geschwister</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead><tbody><tr><td>Anzahl Kinder</td><td>2</td><td>12</td><td>13</td><td>2</td><td>1</td></tr></tbody></table></div><div class=\"rule\"><div><b class=\"h\">Wert mal Anzahl</b><span>0·2 + 1·12 + 2·13 + 3·2 + 4·1 = <b>48</b></span><span>Anzahl Kinder: 2 + 12 + 13 + 2 + 1 = <b>30</b></span><span>x̄ = 48 : 30 = <b>1,6</b></span></div></div><div class=\"merk\"><b>Achtung:</b><span>Teilen durch die Zahl der Kinder (30), nicht durch die Zahl der Spalten (5)!</span></div>"
+    },
+    {
+     "t": "choice",
+     "raw": "<div class=\"tbl\"><table><thead><tr><th>Note</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr></thead><tbody><tr><td>Anzahl</td><td>3</td><td>5</td><td>6</td><td>3</td><td>1</td><td>0</td></tr></tbody></table></div>",
+     "q": "Wie ist der Notendurchschnitt (gerundet)?",
+     "o": [
+      "3,5",
+      "2,7",
+      "3,0",
+      "8,0"
+     ],
+     "a": "2,7",
+     "explain": "1·3 + 2·5 + 3·6 + 4·3 + 5·1 = 48. Es sind 18 Arbeiten. 48 : 18 ≈ <b>2,7</b>.",
+     "help": "Hilfe: Note mal Anzahl, alles addieren, durch die Zahl der Arbeiten teilen."
+    },
+    {
+     "t": "info",
+     "html": "<h3>Der Median x̃ (Zentralwert)</h3><div class=\"rule\"><div><b class=\"h\">Ungerade Anzahl</b><span><b>Erst ordnen!</b> Dann der Wert in der Mitte.</span><span>13 14 16 <b>17</b> 21 28 32 → x̃ = <b>17</b></span></div><div><b class=\"h\">Gerade Anzahl</b><span>Erst ordnen. Dann die <b>beiden mittleren</b> addieren und durch 2 teilen.</span><span>23 26 <b>27 28</b> 32 34 → (27 + 28) : 2 = <b>27,5</b></span></div></div><div class=\"merk\"><b>Häufigster Fehler:</b><span>Nicht geordnet und einfach die Mitte der ungeordneten Liste genommen.</span></div>"
+    },
+    {
+     "t": "choice",
+     "raw": "Wurfweiten (m): <b>28  32  14  16  17  13  21</b>",
+     "q": "Wie heißt der Median?",
+     "o": [
+      "16 m",
+      "17 m",
+      "20,1 m",
+      "14 m"
+     ],
+     "a": "17 m",
+     "explain": "Geordnet: 13 14 16 <b>17</b> 21 28 32. Bei 7 Werten ist der 4. die Mitte: <b>17 m</b>.",
+     "help": "Hilfe: Erst der Größe nach ordnen!"
+    },
+    {
+     "t": "choice",
+     "raw": "Übungszeit (min): <b>28  32  34  26  27  23</b>",
+     "q": "Wie heißt der Median?",
+     "o": [
+      "28 min",
+      "27 min",
+      "27,5 min",
+      "28,3 min"
+     ],
+     "a": "27,5 min",
+     "explain": "Geordnet: 23 26 <b>27 28</b> 32 34. Gerade Anzahl: (27 + 28) : 2 = <b>27,5 min</b>.",
+     "tip": "6 Werte, also gibt es zwei in der Mitte."
+    },
+    {
+     "t": "choice",
+     "raw": "Sprungweiten (cm): <b>317  308  437  276  310</b>",
+     "q": "Wie heißt der Median?",
+     "o": [
+      "437 cm",
+      "308 cm",
+      "329,6 cm",
+      "310 cm"
+     ],
+     "a": "310 cm",
+     "explain": "Geordnet: 276 308 <b>310</b> 317 437 → <b>310 cm</b>.",
+     "tip": "Ordnen, dann der mittlere von 5 Werten."
+    },
+    {
+     "t": "info",
+     "html": "<h3>Die Spannweite</h3><div class=\"rule\"><div><b class=\"h\">Größter Wert − kleinster Wert</b><span>Fahrradpreise: 45 50 30 70 50 35 30 50 (€)</span><span>70 − 30 = <b>40 €</b></span></div></div>"
+    },
+    {
+     "t": "choice",
+     "raw": "Körpergrößen (cm): <b>164 171 173 159 167 163 170 172 174 170 178 169 169 181 176</b>",
+     "q": "Wie groß ist die Spannweite?",
+     "o": [
+      "22 cm",
+      "181 cm",
+      "17 cm",
+      "12 cm"
+     ],
+     "a": "22 cm",
+     "explain": "Größter 181, kleinster 159: 181 − 159 = <b>22 cm</b>.",
+     "help": "Hilfe: Such den größten und den kleinsten Wert."
+    },
+    {
+     "t": "choice",
+     "raw": "Fahrradpreise (€): <b>45  50  30  70  50  35  30  50</b>",
+     "q": "Wie heißt der Median?",
+     "o": [
+      "50 €",
+      "45 €",
+      "47,5 €",
+      "40 €"
+     ],
+     "a": "47,5 €",
+     "explain": "Geordnet: 30 30 35 <b>45 50</b> 50 50 70. (45 + 50) : 2 = <b>47,5 €</b>.",
+     "tip": "8 Werte, also zwei in der Mitte."
+    },
+    {
+     "t": "choice",
+     "raw": "Fahrradpreise (€): <b>45  50  30  70  50  35  30  50</b><br>Der Durchschnitt ist 45 €. Zwei Fahrräder kommen dazu.",
+     "q": "Bei welchen Preisen bleibt der Durchschnitt 45 €?",
+     "o": [
+      "45 € und 50 €",
+      "30 € und 70 €",
+      "40 € und 50 €",
+      "20 € und 25 €"
+     ],
+     "a": "40 € und 50 €",
+     "explain": "Die beiden neuen müssen <b>zusammen 90 €</b> kosten (2 · 45). Also z. B. <b>40 € und 50 €</b> oder zweimal 45 €.",
+     "tip": "Im Schnitt muss jedes neue Rad 45 € kosten. Wie viel zusammen?"
+    },
+    {
+     "t": "info",
+     "html": "<h3>Der fehlende Wert</h3><div class=\"rule\"><div><b class=\"h\">Mittelwert · Anzahl = Summe</b><span>Mittelwert 18, Werte: 14 12 22 20 <b>?</b></span><span>Summe muss sein: 18 · 5 = 90</span><span>Bekannt: 14 + 12 + 22 + 20 = 68</span><span>Fehlt: 90 − 68 = <b>22</b></span></div></div>"
+    },
+    {
+     "t": "choice",
+     "raw": "Mittelwert: <b>20</b><br>Werte: <b>37  13  22  15  18  20  ?</b>",
+     "q": "Welche Zahl fehlt?",
+     "o": [
+      "20",
+      "15",
+      "25",
+      "125"
+     ],
+     "a": "15",
+     "explain": "7 Werte · 20 = 140. Bekannt: 125. Es fehlt 140 − 125 = <b>15</b>.",
+     "help": "Hilfe: Zähl die Werte mit dem Fragezeichen. Anzahl mal 20 ist die Summe."
+    },
+    {
+     "t": "info",
+     "html": "<h3>Erst Einheiten gleich machen</h3><div class=\"rule\"><div><b class=\"h\">Alles in eine Einheit</b><span>1 m = 10 dm = 100 cm</span><span>1 kg = 1000 g</span><span>50 cm, 200 cm, 3,1 m, 45 dm, 70 cm</span><span>→ 50, 200, 310, 450, 70 (cm)</span></div></div>"
+    },
+    {
+     "t": "choice",
+     "raw": "<b>50 cm   200 cm   3,1 m   45 dm   70 cm</b>",
+     "q": "Wie groß ist das arithmetische Mittel?",
+     "o": [
+      "73,62 cm",
+      "216 cm",
+      "200 cm",
+      "270 cm"
+     ],
+     "a": "216 cm",
+     "explain": "In cm: 50 + 200 + 310 + 450 + 70 = 1080, 1080 : 5 = <b>216 cm</b>.",
+     "tip": "Erst alles in cm umrechnen."
+    },
+    {
+     "t": "choice",
+     "raw": "Pakete (kg): <b>0,6  1,2  2,5  2,9  3,6  4,8  0,8  2,6</b>",
+     "q": "Wie heißt der Median (Zentralwert)?",
+     "o": [
+      "2,9 kg",
+      "2,55 kg",
+      "2,375 kg",
+      "3,6 kg"
+     ],
+     "a": "2,55 kg",
+     "explain": "Geordnet: 0,6 0,8 1,2 <b>2,5 2,6</b> 2,9 3,6 4,8. (2,5 + 2,6) : 2 = <b>2,55 kg</b>.",
+     "tip": "Zentralwert ist ein anderes Wort für Median."
+    }
+   ]
+  }
+ ],
+ "boss": {
+  "name": "Der Zahlen-Golem",
+  "steps": [
+   {
+    "t": "choice",
+    "raw": "<span style=\"font-size:1.35em;font-weight:700\">(−13) + (−111)</span>",
+    "q": "Wie viel ist das?",
+    "o": [
+     "+98",
+     "−124",
+     "−98",
+     "+124"
+    ],
+    "a": "−124",
+    "explain": "Gleiches Vorzeichen: 13 + 111 = 124, Minus bleibt: <b>−124</b>.",
+    "tip": "Gleich oder verschieden?"
+   },
+   {
+    "t": "choice",
+    "raw": "<span style=\"font-size:1.35em;font-weight:700\">(+284) + (−177)</span>",
+    "q": "Wie viel ist das?",
+    "o": [
+     "−107",
+     "461",
+     "107",
+     "−461"
+    ],
+    "a": "107",
+    "explain": "284 − 177 = 107, die 284 ist stärker: <b>107</b>.",
+    "tip": "Wer hat den größeren Betrag?"
+   },
+   {
+    "t": "choice",
+    "raw": "<span style=\"font-size:1.35em;font-weight:700\">(+566) − (−812)</span>",
+    "q": "Wie viel ist das?",
+    "o": [
+     "−246",
+     "1378",
+     "246",
+     "−1378"
+    ],
+    "a": "1378",
+    "explain": "(+566) + (+812) = <b>1378</b>.",
+    "tip": "Was wird aus − (−812)?"
+   },
+   {
+    "t": "choice",
+    "raw": "<span style=\"font-size:1.35em;font-weight:700\">(−11) − (+66)</span>",
+    "q": "Wie viel ist das?",
+    "o": [
+     "55",
+     "−55",
+     "−77",
+     "77"
+    ],
+    "a": "−77",
+    "explain": "(−11) + (−66) = <b>−77</b>.",
+    "tip": "Erst als Plus-Aufgabe schreiben."
+   },
+   {
+    "t": "choice",
+    "raw": "<span style=\"font-size:1.35em;font-weight:700\">(−9,099) + (+9,99)</span>",
+    "q": "Wie viel ist das?",
+    "o": [
+     "0,891",
+     "−0,891",
+     "19,089",
+     "0,9"
+    ],
+    "a": "0,891",
+    "explain": "9,990 − 9,099 = <b>0,891</b>, die 9,99 ist stärker.",
+    "tip": "Komma unter Komma: 9,990 − 9,099."
+   },
+   {
+    "t": "choice",
+    "raw": "<span style=\"font-size:1.35em;font-weight:700\">(−2/3) + (−3/7)</span>",
+    "q": "Wie viel ist das?",
+    "o": [
+     "−5/10",
+     "−1 2/21",
+     "1 2/21",
+     "−5/21"
+    ],
+    "a": "−1 2/21",
+    "explain": "Nenner 21: −14/21 − 9/21 = −23/21 = <b>−1 2/21</b>.",
+    "tip": "Gemeinsamer Nenner von 3 und 7?"
+   },
+   {
+    "t": "choice",
+    "raw": "<span style=\"font-size:1.35em;font-weight:700\">(−36,8) − (−4,6) + (+6,4)</span>",
+    "q": "Wie viel ist das?",
+    "o": [
+     "−47,8",
+     "−35",
+     "25,8",
+     "−25,8"
+    ],
+    "a": "−25,8",
+    "explain": "−36,8 + 4,6 = −32,2, dann + 6,4 = <b>−25,8</b>.",
+    "tip": "Schritt für Schritt von links."
+   },
+   {
+    "t": "choice",
+    "raw": "<span style=\"font-size:1.35em;font-weight:700\">−121</span><br>Zahlengerade: <b>A</b> ● ——— <b>−92</b> ——— <b>B</b> ● — <b>0</b> →",
+    "q": "Welcher Punkt zeigt −121?",
+    "o": [
+     "B",
+     "A"
+    ],
+    "a": "A",
+    "explain": "−121 ist kleiner als −92, also links davon: <b>A</b>.",
+    "tip": "Größer oder kleiner als −92?"
+   },
+   {
+    "t": "choice",
+    "raw": "Ballwürfe (m): <b>41  31  21  47  40</b>",
+    "q": "Wie heißt der Median?",
+    "o": [
+     "21 m",
+     "36 m",
+     "40 m",
+     "41 m"
+    ],
+    "a": "40 m",
+    "explain": "Geordnet: 21 31 <b>40</b> 41 47 → <b>40 m</b>.",
+    "tip": "Erst ordnen."
+   },
+   {
+    "t": "choice",
+    "raw": "Ballwürfe (m): <b>32  28  30  34  29</b>",
+    "q": "Wie weit wurde im Durchschnitt geworfen?",
+    "o": [
+     "30 m",
+     "30,6 m",
+     "6 m",
+     "153 m"
+    ],
+    "a": "30,6 m",
+    "explain": "32 + 28 + 30 + 34 + 29 = 153, 153 : 5 = <b>30,6 m</b>.",
+    "tip": "Summe durch Anzahl."
+   },
+   {
+    "t": "choice",
+    "raw": "Ballwürfe (m): <b>27  47  37  60  13</b>",
+    "q": "Wie groß ist die Spannweite?",
+    "o": [
+     "47 m",
+     "60 m",
+     "37 m",
+     "33 m"
+    ],
+    "a": "47 m",
+    "explain": "60 − 13 = <b>47 m</b>.",
+    "tip": "Größter minus kleinster Wert."
+   },
+   {
+    "t": "choice",
+    "raw": "Mittelwert: <b>20</b><br>Werte: <b>33  16  21  21  18  ?</b>",
+    "q": "Welche Zahl fehlt?",
+    "o": [
+     "11",
+     "20",
+     "9",
+     "31"
+    ],
+    "a": "11",
+    "explain": "6 · 20 = 120. Bekannt: 109. Es fehlt <b>11</b>.",
+    "tip": "Wie viele Werte sind es mit dem Fragezeichen?"
+   },
+   {
+    "t": "choice",
+    "raw": "<b>1000 g   2 kg   500 g   250 g   2,3 kg</b>",
+    "q": "Wie heißt der Median?",
+    "o": [
+     "500 g",
+     "1210 g",
+     "2 kg",
+     "1000 g"
+    ],
+    "a": "1000 g",
+    "explain": "In g: 250 500 <b>1000</b> 2000 2300 → <b>1000 g</b>.",
+    "tip": "Erst alles in g, dann ordnen."
+   }
+  ]
+ }
+}

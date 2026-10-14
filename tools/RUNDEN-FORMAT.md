@@ -21,6 +21,7 @@ node tools/pruefe-runde.js runden/<id>.json
 | `lernt` | Liste kurzer Merksätze für den Abschluss |
 | `module` | Liste der Orte (meist 2 bis 3) |
 | `boss` | `{ "name": "…", "steps": [ … ] }`, alles gemischt, ohne `help` |
+| `klareZahlen` | optional `true`: Antworten, Tabellenköpfe und Regelüberschriften in gut lesbarer Schrift statt Pixelschrift (für Mathe) |
 
 Ein Modul: `{ "id": "A", "name": "…", "ico": "🔨", "reward": "…", "teaser": "…", "steps": [ … ] }`. `id` ist ein Buchstabe, nicht `X`.
 

@@ -84,6 +84,8 @@ p { margin: 0; }
 .sentence .ns { border-bottom: 3px solid var(--diamond); }
 .sentence .gap { display: inline-block; min-width: 4.5em; border-bottom: 3px dashed var(--gold); text-align: center; color: var(--gold); font-weight: 700; }
 
+/* Runde mit "klareZahlen": Antworten und Tabellenköpfe in gut lesbarer Schrift (Mathe) */
+body.klar .opts button, body.klar .tbl th, body.klar .rule b.h { font-family: "Atkinson Hyperlegible", sans-serif; font-weight: 700; font-size: 1.15rem; }
 .opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
 button, .btn {
   font: inherit; font-family: var(--display); font-weight: 500; font-size: 1.05rem;
@@ -519,6 +521,7 @@ async function ladeRunde() {
     RUNDE = Object.assign(RUNDE, d, { id });
     MODULE = d.module; BOSS = Object.assign({ id: 'X', ico: '⚔️' }, d.boss);
     document.title = RUNDE.titel;
+    if (RUNDE.klareZahlen) document.body.classList.add('klar');
     render();
   } catch (e) {
     app.innerHTML = '<div class="block"><h2>Diese Runde gibt es nicht</h2><p><a href="./" style="color:var(--diamond)">Zur Übersicht</a></p></div>';
